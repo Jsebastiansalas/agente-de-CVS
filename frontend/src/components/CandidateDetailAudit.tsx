@@ -12,6 +12,7 @@ import {
   MessageSquare,
   Send,
   UserCheck,
+  Printer,
 } from 'lucide-react';
 import { RankedCandidateItem, Verdict, FeedbackRecord } from '../types/api';
 import { submitEvaluationFeedback, getFeedbackList } from '../services/api';
@@ -123,7 +124,7 @@ export const CandidateDetailAudit: React.FC<CandidateDetailAuditProps> = ({
           </span>
         </div>
 
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, justifyContent: 'flex-end' }}>
             <span style={{ fontSize: '1.4rem', fontWeight: 700, color: '#1d4ed8' }} className="tabular">
               {evaluation.overall_score.toFixed(1)}
@@ -133,6 +134,16 @@ export const CandidateDetailAudit: React.FC<CandidateDetailAuditProps> = ({
           <span style={{ fontSize: '0.7rem', color: '#64748b', textTransform: 'uppercase' }}>
             Puntaje Determinista
           </span>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm no-print"
+            onClick={() => window.print()}
+            title="Imprimir o guardar ficha técnica del candidato en PDF"
+            style={{ marginTop: 8, fontSize: '0.74rem', padding: '4px 8px' }}
+          >
+            <Printer size={13} />
+            <span>Ficha PDF</span>
+          </button>
         </div>
       </div>
 
@@ -198,7 +209,7 @@ export const CandidateDetailAudit: React.FC<CandidateDetailAuditProps> = ({
           </div>
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
+            className="btn btn-secondary btn-sm no-print"
             onClick={handleCopyPii}
             style={{ fontSize: '0.74rem' }}
           >
@@ -460,69 +471,71 @@ export const CandidateDetailAudit: React.FC<CandidateDetailAuditProps> = ({
             </h4>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>¿De acuerdo con el agente?</span>
-            <button
-              type="button"
-              className={`btn btn-sm ${feedbackAgrees ? 'btn-primary' : 'btn-secondary'}`}
-              onClick={() => {
-                setFeedbackAgrees(true);
-                setHumanVerdict(evaluation.verdict);
-              }}
-            >
-              Sí, conforme
-            </button>
-            <button
-              type="button"
-              className={`btn btn-sm ${!feedbackAgrees ? 'btn-danger' : 'btn-secondary'}`}
-              onClick={() => setFeedbackAgrees(false)}
-            >
-              No, corregir veredicto
-            </button>
-          </div>
-
-          {!feedbackAgrees && (
-            <div className="form-group" style={{ maxWidth: 300 }}>
-              <label className="form-label">Nuevo Veredicto Humano Asignado:</label>
-              <select
-                className="form-select"
-                value={humanVerdict}
-                onChange={(e) => setHumanVerdict(e.target.value as Verdict)}
+          <div className="no-print">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>¿De acuerdo con el agente?</span>
+              <button
+                type="button"
+                className={`btn btn-sm ${feedbackAgrees ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => {
+                  setFeedbackAgrees(true);
+                  setHumanVerdict(evaluation.verdict);
+                }}
               >
-                <option value="ACEPTABLE">ACEPTABLE</option>
-                <option value="ACEPTABLE_CON_RESERVAS">ACEPTABLE_CON_RESERVAS</option>
-                <option value="NO_ACEPTABLE">NO_ACEPTABLE</option>
-              </select>
+                Sí, conforme
+              </button>
+              <button
+                type="button"
+                className={`btn btn-sm ${!feedbackAgrees ? 'btn-danger' : 'btn-secondary'}`}
+                onClick={() => setFeedbackAgrees(false)}
+              >
+                No, corregir veredicto
+              </button>
             </div>
-          )}
 
-          <div className="form-group">
-            <label className="form-label">Comentarios o Justificación de Auditoría:</label>
-            <textarea
-              className="form-textarea"
-              rows={2}
-              placeholder="Anota tus observaciones técnicas o motivo del cambio de veredicto..."
-              value={feedbackComment}
-              onChange={(e) => setFeedbackComment(e.target.value)}
-            />
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <button
-              type="button"
-              className="btn btn-primary btn-sm"
-              onClick={handleSendFeedback}
-              disabled={savingFeedback}
-            >
-              <Send size={13} />
-              <span>{savingFeedback ? 'Guardando dictamen...' : 'Registrar Dictamen'}</span>
-            </button>
-
-            {feedbackSuccess && (
-              <span style={{ color: '#059669', fontSize: '0.76rem', fontWeight: 600 }}>
-                ✓ Dictamen registrado en base de datos
-              </span>
+            {!feedbackAgrees && (
+              <div className="form-group" style={{ maxWidth: 300 }}>
+                <label className="form-label">Nuevo Veredicto Humano Asignado:</label>
+                <select
+                  className="form-select"
+                  value={humanVerdict}
+                  onChange={(e) => setHumanVerdict(e.target.value as Verdict)}
+                >
+                  <option value="ACEPTABLE">ACEPTABLE</option>
+                  <option value="ACEPTABLE_CON_RESERVAS">ACEPTABLE_CON_RESERVAS</option>
+                  <option value="NO_ACEPTABLE">NO_ACEPTABLE</option>
+                </select>
+              </div>
             )}
+
+            <div className="form-group">
+              <label className="form-label">Comentarios o Justificación de Auditoría:</label>
+              <textarea
+                className="form-textarea"
+                rows={2}
+                placeholder="Anota tus observaciones técnicas o motivo del cambio de veredicto..."
+                value={feedbackComment}
+                onChange={(e) => setFeedbackComment(e.target.value)}
+              />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={handleSendFeedback}
+                disabled={savingFeedback}
+              >
+                <Send size={13} />
+                <span>{savingFeedback ? 'Guardando dictamen...' : 'Registrar Dictamen'}</span>
+              </button>
+
+              {feedbackSuccess && (
+                <span style={{ color: '#059669', fontSize: '0.76rem', fontWeight: 600 }}>
+                  ✓ Dictamen registrado en base de datos
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Historial de feedbacks sobre este candidato */}

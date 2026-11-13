@@ -469,3 +469,59 @@ p {
   margin-top: 8px;
   font-size: 0.86rem;
 }
+
+/* Estilos para Exportación e Impresión en PDF */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .app-header,
+  .top-desk-band,
+  .dual-pane-container > :first-child,
+  .drawer-backdrop,
+  .no-print {
+    display: none !important;
+  }
+
+  .app-shell,
+  .main-workspace {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .dual-pane-container {
+    display: block !important;
+  }
+
+  .desk-panel {
+    border: none !important;
+    box-shadow: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .panel-header {
+    background: #ffffff !important;
+    border-bottom: 2px solid #0f172a !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .panel-body {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .evidence-quote {
+    background-color: #f8fafc !important;
+    border-left: 3px solid #1d4ed8 !important;
+    page-break-inside: avoid;
+  }
+
+  table, tr {
+    page-break-inside: avoid;
+  }
+}
