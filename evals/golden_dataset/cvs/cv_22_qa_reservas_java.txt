@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 22
+Perfil: QA Automation Engineer (Java).
+
+Experiencia Laboral:
+1. Automation Tester | Consulting Tech (2022-06 - Actualidad)
+- Automatización UI con Selenium + Java (TestNG) y APIs con RestAssured.
+- Integración continua en Jenkins.
+
+Idiomas:
+- Inglés: B1

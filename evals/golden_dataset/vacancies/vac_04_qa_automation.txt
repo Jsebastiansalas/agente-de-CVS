@@ -1,0 +1,20 @@
+Vacante: QA Automation Engineer (Mid)
+Seniority: Mid
+Modalidad: Remoto
+
+Requisitos Excluyentes (Knock-out):
+- Mínimo 2 años de experiencia automatizando pruebas de software (E2E o API).
+- Experiencia demostrable con Playwright, Cypress o Selenium.
+
+Habilidades Obligatorias (Must-have):
+- Programación de scripts de prueba en Python, TypeScript o JavaScript.
+- Automatización de pruebas de APIs REST (Postman, Pytest+httpx o RestAssured).
+- Integración de suites de pruebas en pipelines CI/CD.
+
+Habilidades Deseables (Nice-to-have):
+- Pruebas de carga/performance (k6 o JMeter).
+- Conocimientos de SQL para validación de datos.
+- Inglés B1 o superior.
+
+Responsabilidades:
+- Diseñar, automatizar y mantener suites de regresión E2E y API.

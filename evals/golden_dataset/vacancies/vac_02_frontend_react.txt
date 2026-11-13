@@ -1,0 +1,21 @@
+Vacante: Desarrollador Frontend Mid (React / TypeScript)
+Seniority: Mid
+Modalidad: Remoto
+
+Requisitos Excluyentes (Knock-out):
+- Mínimo 2 años de experiencia desarrollando aplicaciones web con React.
+- Dominio práctico de TypeScript.
+
+Habilidades Obligatorias (Must-have):
+- HTML5, CSS3 moderno / Tailwind CSS.
+- Consumo de APIs REST o GraphQL y manejo de estado (Redux Toolkit, Zustand o React Query).
+- Testing de componentes con Jest, Vitest o Testing Library.
+
+Habilidades Deseables (Nice-to-have):
+- Next.js (App Router / SSR).
+- Accesibilidad web (WCAG) y optimización Core Web Vitals.
+- Inglés B1 o superior.
+
+Responsabilidades:
+- Construir interfaces responsivas y accesibles desde diseños en Figma.
+- Colaborar con backend en la definición de contratos API.

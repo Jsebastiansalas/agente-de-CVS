@@ -1,0 +1,7 @@
+CANDIDATO ANÓNIMO 16
+Perfil: Data Engineer.
+
+Experiencia Laboral:
+1. Data Engineer | Logística Express (2021-01 - Actualidad)
+- Diseño de pipelines en PySpark y Apache Airflow sobre AWS EMR y Redshift.
+- Modelado de datos con dbt y SQL.

@@ -1,0 +1,13 @@
+CANDIDATO ANÓNIMO 13
+Perfil: Senior Data Engineer con 5 años construyendo plataformas analíticas en AWS.
+
+Experiencia Laboral:
+1. Senior Data Engineer | RetailAnalytics (2022-01 - Actualidad)
+- Pipelines batch y streaming con PySpark, AWS Glue, Kafka y Apache Airflow.
+- Modelado dimensional en Amazon Redshift y dbt; automatización con Terraform.
+
+2. Data Engineer | Seguros Global (2020-06 - 2021-12)
+- Procesos ETL en Python y SQL avanzado sobre PostgreSQL y S3.
+
+Idiomas:
+- Inglés: C1

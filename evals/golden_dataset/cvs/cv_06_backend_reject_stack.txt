@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 06
+Perfil: Desarrollador Web Senior en PHP y WordPress.
+
+Experiencia Laboral:
+1. Senior PHP Developer | WebStudio (2020-01 - Actualidad)
+- Desarrollo de sitios corporativos y e-commerce en WordPress, WooCommerce y Laravel.
+- Administración de MySQL y cPanel.
+
+Idiomas:
+- Inglés: B2

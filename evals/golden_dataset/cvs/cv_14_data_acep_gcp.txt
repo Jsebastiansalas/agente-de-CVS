@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 14
+Perfil: Ingeniero de Datos especializado en GCP.
+
+Experiencia Laboral:
+1. Data Engineer | MobilityApp (2021-04 - Actualidad)
+- Orquestación de DAGs en Cloud Composer (Apache Airflow).
+- Transformaciones ELT con dbt y SQL avanzado en BigQuery; ingesta con Python y Pub/Sub.
+
+Idiomas:
+- Inglés: B2

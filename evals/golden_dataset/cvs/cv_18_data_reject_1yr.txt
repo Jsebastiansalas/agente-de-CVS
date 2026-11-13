@@ -1,0 +1,9 @@
+CANDIDATO ANÓNIMO 18
+Perfil: Junior Data Engineer.
+
+Experiencia Laboral:
+1. Junior Data Engineer | TechStart (2024-10 - 2025-10)
+- Mantenimiento de scripts Python y consultas en BigQuery.
+
+Idiomas:
+- Inglés: B2

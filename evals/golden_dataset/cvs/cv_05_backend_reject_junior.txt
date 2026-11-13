@@ -1,0 +1,12 @@
+CANDIDATO ANÓNIMO 05
+Perfil: Desarrollador Junior recién egresado con conocimientos en Python.
+
+Experiencia Laboral:
+1. Practicante Backend | StartUp Uno (2025-02 - 2025-10)
+- Apoyo en endpoints básicos con FastAPI y pruebas manuales.
+
+Educación:
+- Bootcamp Desarrollo Web (2024).
+
+Idiomas:
+- Inglés: A2

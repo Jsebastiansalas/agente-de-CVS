@@ -1,0 +1,11 @@
+CANDIDATO ANÓNIMO 19
+Perfil: QA Automation Engineer.
+
+Experiencia Laboral:
+1. QA Automation Engineer | EdTech Global (2022-09 - Actualidad)
+- Creación desde cero de framework E2E con Playwright y TypeScript.
+- Automatización de pruebas API con Postman/Newman integradas en GitHub Actions.
+- Pruebas de carga con k6 y validaciones en PostgreSQL.
+
+Idiomas:
+- Inglés: B2

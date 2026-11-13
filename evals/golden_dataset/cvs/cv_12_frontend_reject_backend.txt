@@ -1,0 +1,6 @@
+CANDIDATO ANÓNIMO 12
+Perfil: Administrador de Bases de Datos Oracle.
+
+Experiencia Laboral:
+1. DBA Oracle | Telecom (2019-01 - Actualidad)
+- Administración de instancias Oracle, tuning SQL y respaldos RMAN.

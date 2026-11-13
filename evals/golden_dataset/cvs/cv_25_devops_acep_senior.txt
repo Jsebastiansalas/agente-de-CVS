@@ -1,0 +1,14 @@
+CANDIDATO ANÓNIMO 25
+Perfil: Site Reliability Engineer / DevOps.
+
+Experiencia Laboral:
+1. SRE / DevOps Engineer | CloudNative Co (2021-08 - Actualidad)
+- Gestión de infraestructura en AWS con Terraform y módulos reutilizables.
+- Administración de clústeres Kubernetes (EKS), Helm y GitHub Actions.
+- Observabilidad con Prometheus, Grafana y alertas en PagerDuty; Linux y scripting en Python/Bash.
+
+Certificaciones:
+- AWS Certified Solutions Architect - Associate.
+
+Idiomas:
+- Inglés: B2

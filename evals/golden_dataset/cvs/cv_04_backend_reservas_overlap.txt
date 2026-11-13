@@ -1,0 +1,15 @@
+CANDIDATO ANÓNIMO 04
+Perfil: Desarrollador Python / FastAPI.
+
+Experiencia Laboral:
+1. Consultor Backend Freelance | Varios Clientes (2023-06 - 2025-10)
+- Desarrollo de APIs en FastAPI, PostgreSQL y Docker.
+
+2. Backend Developer | TechCorp (2023-01 - Actualidad)
+- Servicios REST en Django y FastAPI con PostgreSQL, pytest y GitLab CI.
+
+Educación:
+- Ingeniero de Software (2022).
+
+Idiomas:
+- Inglés: B2

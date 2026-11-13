@@ -1,0 +1,13 @@
+CANDIDATO ANÓNIMO 03
+Perfil: Desarrollador Backend Python con foco en sistemas transaccionales.
+
+Experiencia Laboral:
+1. Desarrollador Backend | PagosRápidos (2022-05 - Actualidad)
+- Construcción de servicios REST con Flask y SQLAlchemy sobre MySQL.
+- Uso diario de Docker, pytest y GitHub Actions.
+
+2. Desarrollador Python | Agencia Digital (2021-06 - 2022-04)
+- Desarrollo de endpoints internos en Python y bases de datos relacionales.
+
+Educación:
+- Tecnólogo en Desarrollo de Software (2020).

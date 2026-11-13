@@ -1,0 +1,21 @@
+Vacante: DevOps / SRE Engineer (Mid-Senior)
+Seniority: Mid-Senior
+Modalidad: Remoto
+
+Requisitos Excluyentes (Knock-out):
+- Mínimo 3 años de experiencia en roles DevOps, SRE o Infraestructura Cloud.
+- Experiencia en producción con AWS y Terraform (IaC).
+- Inglés nivel B2 o superior.
+
+Habilidades Obligatorias (Must-have):
+- Administración de contenedores y orquestación con Kubernetes (EKS/GKE).
+- Construcción de pipelines CI/CD (GitHub Actions, GitLab CI o Jenkins).
+- Administración de Linux, redes y observabilidad (Prometheus, Grafana, Datadog).
+
+Habilidades Deseables (Nice-to-have):
+- Scripting en Python o Bash/Go.
+- Certificación AWS Solutions Architect o CKA.
+
+Responsabilidades:
+- Automatizar aprovisionamiento de infraestructura y despliegues sin downtime.
+- Mantener SLAs y responder a incidentes en producción.

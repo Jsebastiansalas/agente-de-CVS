@@ -1,0 +1,306 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "case_id": "case_01",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_01_backend_acep_senior.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "5 años reales en Python + FastAPI + PostgreSQL + Docker + pytest + Inglés C1.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_02",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_02_backend_acep_2col.pdf",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "CV en dos columnas; cumple 4.5+ años en Python/Django/PostgreSQL/Docker/CI e Inglés B2.",
+      "difficulty_tags": [
+        "two_column_pdf"
+      ]
+    },
+    {
+      "case_id": "case_03",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_03_backend_reservas_equiv.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "Tiene 4 años en Python/Flask+MySQL (tecnología equivalente a FastAPI/PostgreSQL) pero no menciona nivel de inglés.",
+      "difficulty_tags": [
+        "equivalent_technologies",
+        "missing_knockout_info"
+      ]
+    },
+    {
+      "case_id": "case_04",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_04_backend_reservas_overlap.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "Tiene trabajos traslapados (2023-2025 paralelo); meses reales ~38 meses (cerca de 4 años) con buen stack.",
+      "difficulty_tags": [
+        "overlapping_dates"
+      ]
+    },
+    {
+      "case_id": "case_05",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_05_backend_reject_junior.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Solo 8 meses de experiencia laboral; incumple requisito excluyente de 4 años en Python.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_06",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_06_backend_reject_stack.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "6 años de experiencia pero en PHP/WordPress; no tiene experiencia en Python ni FastAPI/Django.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_07",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_07_frontend_acep_docx.docx",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "CV en DOCX; 3 años en React, TypeScript, Tailwind, React Query, Vitest y Next.js.",
+      "difficulty_tags": [
+        "docx_format"
+      ]
+    },
+    {
+      "case_id": "case_08",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_08_frontend_acep_std.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "3.5 años en React + TypeScript + Jest + GraphQL + CSS moderno.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_09",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_09_frontend_reservas_scan.pdf",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "PDF escaneado sin capa de texto; 2.5 años en React/JS, pero TypeScript solo listado sin evidencia laboral y sin testing.",
+      "difficulty_tags": [
+        "scanned_image_pdf"
+      ]
+    },
+    {
+      "case_id": "case_10",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_10_frontend_reservas_angular.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "3 años fuertes en Angular + TypeScript + RxJS, y solo 1 proyecto corto en React; alta transferibilidad.",
+      "difficulty_tags": [
+        "equivalent_technologies"
+      ]
+    },
+    {
+      "case_id": "case_11",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_11_frontend_reject_noexp.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Sin experiencia laboral formal en React ni TypeScript (solo proyectos académicos).",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_12",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_12_frontend_reject_backend.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Perfil DBA / PL-SQL sin experiencia en React ni desarrollo frontend.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_13",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_13_data_acep_senior.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "5 años en Data Engineering con PySpark, SQL, Airflow, Redshift/AWS e Inglés C1.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_14",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_14_data_acep_gcp.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "4.5 años en GCP, BigQuery, dbt, Python, Airflow e Inglés B2.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_15",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_15_data_reservas_bi.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "4.5 años en BI/SQL/Python y Snowflake, pero sin experiencia comprobada en Spark ni Airflow (usó SSIS/Azure Data Factory).",
+      "difficulty_tags": [
+        "equivalent_technologies"
+      ]
+    },
+    {
+      "case_id": "case_16",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_16_data_reservas_noeng.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "Cumple el stack técnico (4+ años PySpark, Airflow, AWS, SQL), pero no especifica nivel de inglés.",
+      "difficulty_tags": [
+        "missing_knockout_info"
+      ]
+    },
+    {
+      "case_id": "case_17",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_17_data_reject_analyst.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Analista de datos enfocado en Excel y Power BI sin pipelines en Python/Spark/Airflow ni cloud.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_18",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_18_data_reject_1yr.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Solo 1 año de experiencia total; incumple el mínimo excluyente de 4 años.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_19",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_19_qa_acep_playwright.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "3 años automatizando con Playwright + TypeScript + Postman + GitHub Actions + k6.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_20",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_20_qa_acep_selenium.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "2.5 años en Selenium + Python + Pytest + GitLab CI.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_21",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_21_qa_reservas_manual.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "3 años de QA Manual y apenas 1 año de automatización con Cypress (por debajo de 2 años en automatización).",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_22",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_22_qa_reservas_java.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "3 años automatizando con Selenium + Java + RestAssured (stack equivalente, aunque pide Python/TS/JS).",
+      "difficulty_tags": [
+        "equivalent_technologies"
+      ]
+    },
+    {
+      "case_id": "case_23",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_23_qa_reject_onlymanual.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "4 años de QA 100% manual sin programación ni herramientas de automatización.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_24",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_24_qa_reject_support.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Experiencia exclusivamente en mesa de ayuda y soporte técnico N1.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_25",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_25_devops_acep_senior.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "4 años en AWS + Terraform + Kubernetes EKS + GitHub Actions + Prometheus/Grafana + Inglés B2.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_26",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_26_devops_acep_gitlab.txt",
+      "expected_verdict": "ACEPTABLE",
+      "reason": "3.5 años en AWS, Terraform, Kubernetes, GitLab CI, Datadog e Inglés C1.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_27",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_27_devops_reservas_azure.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "4 años fuertes en Terraform + Kubernetes (AKS) + CI/CD, pero en Azure/GCP en vez de AWS.",
+      "difficulty_tags": [
+        "equivalent_technologies"
+      ]
+    },
+    {
+      "case_id": "case_28",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_28_devops_reservas_noiac.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "reason": "3 años en AWS, Docker/ECS y CI/CD, pero Terraform solo en laboratorio y sin Kubernetes en producción.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_29",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_29_devops_reject_onprem.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Administrador de redes on-premise sin experiencia en AWS, Terraform, Kubernetes ni CI/CD.",
+      "difficulty_tags": [
+        "standard"
+      ]
+    },
+    {
+      "case_id": "case_30",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_30_devops_reject_english.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "reason": "Solo 1 año de experiencia e inglés A1 (incumple 3 años mínimos e inglés B2 excluyente).",
+      "difficulty_tags": [
+        "standard"
+      ]
+    }
+  ]
+}

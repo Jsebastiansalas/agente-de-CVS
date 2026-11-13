@@ -1,0 +1,19 @@
+CANDIDATO ANÓNIMO 01
+Perfil: Ingeniero de Software Backend con 5 años de experiencia diseñando APIs escalables en Python.
+
+Experiencia Laboral:
+1. Senior Python Developer | FinTech Andina (2023-02 - Actualidad)
+- Lideró la arquitectura de microservicios con FastAPI, PostgreSQL y Celery + Redis.
+- Implementó pipelines CI/CD en GitHub Actions y suites de pruebas con pytest (90% cobertura).
+- Desplegó servicios contenerizados con Docker en AWS ECS.
+
+2. Backend Developer | DataSoft Latam (2021-01 - 2023-01)
+- Desarrolló APIs REST en Django y FastAPI conectadas a PostgreSQL.
+- Optimizó consultas SQL reduciendo latencia promedio en 40%.
+
+Educación:
+- Ingeniería de Sistemas (2019).
+
+Idiomas:
+- Español: Nativo
+- Inglés: C1 (IELTS 2023)

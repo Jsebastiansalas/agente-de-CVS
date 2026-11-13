@@ -1,0 +1,8 @@
+CANDIDATO ANÓNIMO 11
+Perfil: Estudiante de último semestre buscando primera oportunidad laboral.
+
+Experiencia:
+- Proyecto universitario de carrito de compras en HTML, CSS y JavaScript vanilla (3 meses).
+
+Educación:
+- Ingeniería de Sistemas (en curso).

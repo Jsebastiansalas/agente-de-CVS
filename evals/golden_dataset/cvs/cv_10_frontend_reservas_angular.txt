@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 10
+Perfil: Frontend Developer con sólida experiencia en TypeScript.
+
+Experiencia Laboral:
+1. Frontend Developer | Banco Digital (2022-08 - Actualidad)
+- Desarrollo de banca web en Angular 15, TypeScript, RxJS y pruebas con Jest.
+- Migración de módulo de onboarding a React + TypeScript durante 4 meses.
+
+Idiomas:
+- Inglés: B2

@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 15
+Perfil: BI & Data Specialist.
+
+Experiencia Laboral:
+1. Especialista ETL / BI | Grupo Financiero (2021-03 - Actualidad)
+- Pipelines ELT en Azure Data Factory y scripts Python hacia Snowflake.
+- SQL avanzado para reportes ejecutivos y modelado estrella.
+
+Idiomas:
+- Inglés: B2

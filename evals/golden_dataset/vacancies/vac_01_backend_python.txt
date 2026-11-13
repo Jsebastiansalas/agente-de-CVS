@@ -1,0 +1,22 @@
+Vacante: Desarrollador Backend Senior (Python)
+Seniority: Senior
+Modalidad: Remoto / Híbrido
+
+Requisitos Excluyentes (Knock-out):
+- Mínimo 4 años de experiencia comprobable desarrollando backend con Python.
+- Experiencia en producción con FastAPI o Django.
+- Inglés nivel B2 o superior (lectura técnica y reuniones).
+
+Habilidades Obligatorias (Must-have):
+- Diseño de APIs RESTful y modelado en bases de datos relacionales (PostgreSQL).
+- Contenerización con Docker y pruebas automatizadas (pytest).
+- Integración continua (GitHub Actions o GitLab CI).
+
+Habilidades Deseables (Nice-to-have):
+- Orquestación con Kubernetes o AWS ECS.
+- Colas de mensajes (RabbitMQ, Kafka o Celery + Redis).
+- Arquitectura de microservicios.
+
+Responsabilidades:
+- Diseñar y mantener servicios backend de alto tráfico.
+- Optimizar consultas SQL y garantizar cobertura de pruebas.

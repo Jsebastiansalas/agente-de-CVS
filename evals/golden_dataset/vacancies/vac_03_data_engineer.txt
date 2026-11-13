@@ -1,0 +1,21 @@
+Vacante: Ingeniero de Datos Senior (SQL / Spark / Cloud)
+Seniority: Senior
+Modalidad: Híbrido
+
+Requisitos Excluyentes (Knock-out):
+- Mínimo 4 años de experiencia en Ingeniería de Datos o ETL/ELT.
+- SQL avanzado y Python para procesamiento de datos.
+- Inglés B2 o superior.
+
+Habilidades Obligatorias (Must-have):
+- Procesamiento distribuido con Apache Spark / PySpark o transformación moderna con dbt.
+- Experiencia en al menos una nube (AWS, GCP o Azure) y Data Warehouses (BigQuery, Snowflake o Redshift).
+- Orquestación de pipelines con Apache Airflow o Dagster.
+
+Habilidades Deseables (Nice-to-have):
+- Infraestructura como código (Terraform).
+- Streaming con Kafka o Pub/Sub.
+
+Responsabilidades:
+- Construir y monitorear pipelines batch y streaming escalables.
+- Garantizar calidad y linaje de datos.

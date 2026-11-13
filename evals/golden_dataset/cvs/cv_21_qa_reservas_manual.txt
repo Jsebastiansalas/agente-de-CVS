@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 21
+Perfil: Analista QA en transición a automatización.
+
+Experiencia Laboral:
+1. QA Analyst | Banca Móvil (2022-01 - Actualidad)
+- 2 años ejecutando pruebas funcionales manuales, casos de prueba en Jira y Postman manual.
+- Último año (2024-10 - Actualidad) automatizando flujos críticos con Cypress y JavaScript.
+
+Idiomas:
+- Inglés: B1

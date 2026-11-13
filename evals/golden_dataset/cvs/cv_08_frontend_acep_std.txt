@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 08
+Perfil: Ingeniero Frontend especializado en ecosistema React.
+
+Experiencia Laboral:
+1. Mid Frontend Developer | SaaS Cloud (2022-05 - Actualidad)
+- Interfaces complejas con React, TypeScript, Zustand y GraphQL.
+- Pruebas con Jest y React Testing Library; optimización de Core Web Vitals.
+
+Idiomas:
+- Inglés: B1

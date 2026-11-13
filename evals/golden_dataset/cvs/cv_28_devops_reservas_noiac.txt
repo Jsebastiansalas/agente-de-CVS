@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 28
+Perfil: Cloud Operations Engineer.
+
+Experiencia Laboral:
+1. Cloud Engineer | MediaStream (2022-09 - Actualidad)
+- Operación de servicios en AWS EC2 y AWS ECS, pipelines en Jenkins y monitoreo en CloudWatch.
+- Prácticas internas con Terraform para entornos de prueba.
+
+Idiomas:
+- Inglés: B2

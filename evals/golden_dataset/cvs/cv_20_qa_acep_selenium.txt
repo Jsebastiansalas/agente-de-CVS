@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 20
+Perfil: QA Engineer especializado en automatización con Python.
+
+Experiencia Laboral:
+1. QA Automation | InsurTech (2023-03 - Actualidad)
+- Suites de regresión web con Selenium WebDriver y Python (Pytest).
+- Pruebas automatizadas de endpoints REST con pytest + httpx en GitLab CI.
+
+Idiomas:
+- Inglés: B1

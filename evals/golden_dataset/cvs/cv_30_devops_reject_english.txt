@@ -1,0 +1,9 @@
+CANDIDATO ANÓNIMO 30
+Perfil: Junior Cloud Support.
+
+Experiencia Laboral:
+1. Cloud Support Associate | Hosting Co (2024-10 - 2025-10)
+- Soporte básico a instancias EC2 y S3 en AWS.
+
+Idiomas:
+- Inglés: A1

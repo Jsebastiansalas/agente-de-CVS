@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 26
+Perfil: DevOps Engineer.
+
+Experiencia Laboral:
+1. DevOps Engineer | PayTech (2022-03 - Actualidad)
+- Infraestructura como código con Terraform en AWS (VPC, RDS, EKS).
+- Pipelines CI/CD en GitLab CI; monitoreo y APM con Datadog en servidores Linux.
+
+Idiomas:
+- Inglés: C1

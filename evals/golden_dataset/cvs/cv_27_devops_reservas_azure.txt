@@ -1,0 +1,10 @@
+CANDIDATO ANÓNIMO 27
+Perfil: Cloud & DevOps Engineer.
+
+Experiencia Laboral:
+1. DevOps Engineer | Enterprise Corp (2021-06 - Actualidad)
+- Infraestructura con Terraform en Azure y GCP (AKS/GKE).
+- Pipelines en GitHub Actions y monitoreo con Prometheus/Grafana sobre Linux.
+
+Idiomas:
+- Inglés: B2
