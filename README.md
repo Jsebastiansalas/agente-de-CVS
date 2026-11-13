@@ -20,6 +20,21 @@ Copy-Item .env.example .env
 - Dashboard visual: `http://localhost:8000/`
 - Documentación interactiva Swagger/OpenAPI: `http://localhost:8000/docs`
 
+## Ejecutar con Docker y Docker Compose
+
+Asegúrate de tener tu archivo `.env` configurado con `GEMINI_API_KEY` (nunca se copia dentro de la imagen, se inyecta en tiempo de ejecución).
+
+```powershell
+# Construir y levantar el servicio (Dashboard + API en puerto 8000, DB persistida en ./data)
+docker compose up --build -d
+
+# Ver logs
+docker compose logs -f
+
+# Ejecutar CLI dentro del contenedor montando una carpeta local de documentos
+docker compose run --rm -v "${PWD}\evals\golden_dataset:/docs:ro" cv-agent python -m src.cli --vacancy /docs/vacancies/vac_01_backend_python.txt --cv /docs/cvs/cv_02_backend_acep_2col.pdf
+```
+
 ## Evaluar archivos directamente por CLI
 
 ```powershell

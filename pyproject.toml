@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "cv-vacancy-agent"
 version = "0.1.0"
 description = "Agente de IA en Python + Gemini para evaluar Hojas de Vida contra Vacantes"
-readme = "plan.md"
+readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "google-genai>=1.0.0",
