@@ -1,6 +1,6 @@
 # Agente Evaluador de Hojas de Vida vs. Vacantes
 
-Sistema agéntico en **Python + LangGraph + Google Gemini** que compara hojas de vida (`PDF`, `DOCX`, `TXT`) contra una vacante, valida requisitos excluyentes (*knock-out*), evalúa habilidades con citas de evidencia textual, calcula el puntaje de forma determinista y entrega un veredicto auditable (**Aceptable**, **Aceptable con Reservas**, **No Aceptable**).
+Sistema agéntico en **Python + LangGraph + Google Gemini** que compara hojas de vida (`PDF`, `DOCX`, `TXT`, `MD` e imágenes `PNG/JPG/WEBP`) contra una vacante, valida requisitos excluyentes (*knock-out*), evalúa habilidades con citas de evidencia textual, calcula el puntaje de forma determinista y entrega un veredicto auditable (**Aceptable**, **Aceptable con Reservas**, **No Aceptable**).
 
 ## Requisitos e Instalación
 
@@ -19,6 +19,16 @@ Copy-Item .env.example .env
 
 - Dashboard visual: `http://localhost:8000/`
 - Documentación interactiva Swagger/OpenAPI: `http://localhost:8000/docs`
+
+## Evaluar archivos directamente por CLI
+
+```powershell
+# Un CV contra archivo de vacante
+.\.venv\Scripts\python.exe -m src.cli --vacancy ruta\vacante.pdf --cv ruta\hoja_de_vida.pdf
+
+# Múltiples CVs (PDF, DOCX, imagen)
+.\.venv\Scripts\python.exe -m src.cli --vacancy ruta\vacante.txt --cv cv1.pdf cv2.docx cv3.png
+```
 
 ## Pruebas, Linting y Benchmark
 
