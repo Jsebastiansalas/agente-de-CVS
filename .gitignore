@@ -21,4 +21,5 @@ htmlcov/
 # Local data / DB
 *.db
 *.sqlite3
+data/
 evals/reports/
