@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluador Inteligente CV vs. Vacante</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --ok-bg: #ecfdf5;
+      --ok-text: #065f46;
+      --ok-border: #a7f3d0;
+      --warn-bg: #fffbeb;
+      --warn-text: #92400e;
+      --warn-border: #fde68a;
+      --bad-bg: #fff1f2;
+      --bad-text: #9f1239;
+      --bad-border: #fecdd3;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header h1 { margin: 0; font-size: 1.15rem; font-weight: 700; }
+    header span { font-size: 0.85rem; color: #94a3b8; }
+
+    .container {
+      max-width: 1320px;
+      margin: 20px auto;
+      padding: 0 16px 40px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+    textarea, input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font: inherit;
+      font-size: 0.9rem;
+      background: #fff;
+      color: var(--text);
+    }
+    textarea { min-height: 130px; resize: vertical; }
+
+    .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+    button, .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 9px 15px;
+      border-radius: 7px;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button:hover, .btn:hover { background: var(--primary-hover); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--surface-alt);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .pill-ok { background: var(--ok-bg); color: var(--ok-text); border-color: var(--ok-border); }
+    .pill-warn { background: var(--warn-bg); color: var(--warn-text); border-color: var(--warn-border); }
+    .pill-bad { background: var(--bad-bg); color: var(--bad-text); border-color: var(--bad-border); }
+
+    .dropzone {
+      border: 2px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 18px;
+      text-align: center;
+      background: var(--surface-alt);
+      cursor: pointer;
+    }
+    .dropzone.dragover { border-color: var(--primary); background: #eff6ff; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
+    tbody tr { cursor: pointer; }
+    tbody tr:hover { background: #f8fafc; }
+    tbody tr.active { background: #eff6ff; }
+
+    .bar-wrap { width: 110px; background: #e2e8f0; height: 7px; border-radius: 999px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 6px; }
+    .bar-fill { height: 100%; background: var(--primary); }
+
+    .alert-danger {
+      background: var(--bad-bg);
+      color: var(--bad-text);
+      border: 1px solid var(--bad-border);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+    .status-text { font-size: 0.85rem; color: var(--muted); }
+    .rubric-box {
+      margin-top: 12px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.84rem;
+    }
+    .section-title { font-size: 0.85rem; font-weight: 700; color: var(--muted); margin: 16px 0 8px; text-transform: uppercase; }
+    ul.compact { margin: 4px 0; padding-left: 18px; font-size: 0.88rem; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Agente Comparador de CVs vs. Vacante</h1>
+      <span>LangGraph · Google Gemini · Scoring Determinista</span>
+    </div>
+    <div class="row" style="margin-top:0">
+      <a class="btn btn-secondary" href="/docs" target="_blank" rel="noopener">API Docs (Swagger)</a>
+      <a class="btn btn-secondary" href="/api/v1/evaluations/export/csv">Descargar CSV</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid-2">
+      <!-- Paso 1: Vacante -->
+      <div class="card">
+        <h2>1. Definir Vacante <span id="vacancyBadge" class="pill pill-warn">Sin analizar</span></h2>
+        <label for="vacancyText">Descripción de la vacante (texto libre o sube un archivo)</label>
+        <textarea id="vacancyText" placeholder="Pega aquí la descripción de la vacante con requisitos excluyentes, habilidades y años mínimos..."></textarea>
+        <div class="row">
+          <input type="file" id="vacancyFile" accept=".txt,.md,.pdf,.docx" style="max-width:250px" />
+          <button id="parseVacancyBtn" type="button">Analizar Vacante</button>
+        </div>
+        <div id="vacancyPreview" class="rubric-box hidden"></div>
+      </div>
+
+      <!-- Paso 2: Carga de CVs -->
+      <div class="card">
+        <h2>2. Cargar Hojas de Vida (1 a 50)</h2>
+        <div id="dropzone" class="dropzone">
+          <p style="margin:0 0 8px;font-weight:600">Arrastra archivos PDF, DOCX o TXT aquí</p>
+          <input type="file" id="cvFiles" multiple accept=".pdf,.docx,.txt,.md" />
+        </div>
+        <div class="row">
+          <div style="flex:1;min-width:140px">
+            <label for="concurrencyInput">Concurrencia</label>
+            <input type="number" id="concurrencyInput" min="1" max="10" value="3" />
+          </div>
+          <button id="evaluateBtn" type="button" style="margin-top:18px">Evaluar Candidatos</button>
+          <button id="loadHistoryBtn" type="button" class="btn-secondary" style="margin-top:18px">Cargar Historial</button>
+        </div>
+        <p id="evalStatus" class="status-text" style="margin-top:10px">Listo para evaluar.</p>
+      </div>
+    </section>
+
+    <!-- Ranking -->
+    <section class="card">
+      <h2>
+        <span>3. Ranking de Candidatos</span>
+        <select id="verdictFilter" style="width:auto;font-size:0.84rem">
+          <option value="">Todos los veredictos</option>
+          <option value="ACEPTABLE">Aceptable</option>
+          <option value="ACEPTABLE_CON_RESERVAS">Aceptable con reservas</option>
+          <option value="NO_ACEPTABLE">No aceptable</option>
+        </select>
+      </h2>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Archivo / Candidato</th>
+              <th>Veredicto</th>
+              <th>Puntaje</th>
+              <th>Exp (40%)</th>
+              <th>Must (35%)</th>
+              <th>Nice (15%)</th>
+              <th>Edu/Id (10%)</th>
+              <th>Revisión Humana</th>
+            </tr>
+          </thead>
+          <tbody id="rankingBody">
+            <tr><td colspan="9" class="status-text">Aún no hay evaluaciones cargadas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Detalle lateral / comparación -->
+    <section id="detailCard" class="card hidden">
+      <h2 id="detailHeader">Detalle de Evaluación</h2>
+      <div id="securityAlert" class="alert-danger hidden"></div>
+      <div class="grid-2">
+        <div>
+          <div class="section-title">Resumen Ejecutivo</div>
+          <p id="detailSummary" style="margin:0;font-size:0.92rem"></p>
+          <p id="detailPii" class="status-text" style="margin-top:8px"></p>
+
+          <div class="section-title">Requisitos Excluyentes (Knock-out)</div>
+          <table>
+            <thead><tr><th>Requisito</th><th>Estado</th><th>Evidencia</th></tr></thead>
+            <tbody id="knockoutBody"></tbody>
+          </table>
+        </div>
+
+        <div>
+          <div class="section-title">Matriz de Habilidades y Evidencia</div>
+          <table>
+            <thead><tr><th>Habilidad</th><th>Nivel</th><th>Evidencia en CV</th></tr></thead>
+            <tbody id="skillsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:14px">
+        <div>
+          <div class="section-title">Brechas Detectadas</div>
+          <ul id="gapsList" class="compact"></ul>
+        </div>
+        <div>
+          <div class="section-title">Preguntas Sugeridas de Entrevista</div>
+          <ul id="questionsList" class="compact"></ul>
+        </div>
+      </div>
+
+      <div class="rubric-box" style="margin-top:16px">
+        <strong>Validación Humana (Human-in-the-Loop)</strong>
+        <div class="row">
+          <button id="agreeBtn" type="button" class="btn-secondary">De acuerdo con el Agente</button>
+          <select id="humanVerdictSelect" style="width:auto">
+            <option value="ACEPTABLE">Corregir a: ACEPTABLE</option>
+            <option value="ACEPTABLE_CON_RESERVAS">Corregir a: ACEPTABLE_CON_RESERVAS</option>
+            <option value="NO_ACEPTABLE">Corregir a: NO_ACEPTABLE</option>
+          </select>
+          <input type="text" id="feedbackComment" placeholder="Motivo o nota del reclutador..." style="flex:1;min-width:200px" />
+          <button id="sendFeedbackBtn" type="button">Guardar Corrección</button>
+        </div>
+        <p id="feedbackStatus" class="status-text" style="margin:6px 0 0"></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let parsedVacancy = null;
+    let evaluationsList = [];
+    let selectedItem = null;
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function verdictPill(verdict) {
+      if (verdict === "ACEPTABLE") return '<span class="pill pill-ok">ACEPTABLE</span>';
+      if (verdict === "ACEPTABLE_CON_RESERVAS") return '<span class="pill pill-warn">CON RESERVAS</span>';
+      return '<span class="pill pill-bad">NO ACEPTABLE</span>';
+    }
+
+    function scoreBar(val) {
+      const pct = Math.max(0, Math.min(100, Number(val) || 0));
+      return `<span class="bar-wrap"><span class="bar-fill" style="width:${pct}%"></span></span>${pct.toFixed(0)}%`;
+    }
+
+    function renderVacancyPreview(vac) {
+      const box = document.getElementById("vacancyPreview");
+      const badge = document.getElementById("vacancyBadge");
+      badge.className = "pill pill-ok";
+      badge.textContent = "Analizada";
+      box.classList.remove("hidden");
+      box.innerHTML = `
+        <strong>${escapeHtml(vac.title)}</strong> (${escapeHtml(vac.seniority)} · Mín. ${vac.min_years_experience} años)<br/>
+        <strong>Knock-out:</strong> ${vac.knockout_requirements.map(escapeHtml).join(" · ") || "Ninguno"}<br/>
+        <strong>Must-have:</strong> ${vac.must_have_skills.map(escapeHtml).join(", ") || "Ninguno"}<br/>
+        <strong>Nice-to-have:</strong> ${vac.nice_to_have_skills.map(escapeHtml).join(", ") || "Ninguno"}
+      `;
+    }
+
+    document.getElementById("parseVacancyBtn").addEventListener("click", async () => {
+      const text = document.getElementById("vacancyText").value.trim();
+      const file = document.getElementById("vacancyFile").files[0];
+      if (!text && !file) {
+        alert("Ingresa texto de la vacante o adjunta un archivo.");
+        return;
+      }
+      const fd = new FormData();
+      if (file) fd.append("file", file);
+      else fd.append("vacancy_text", text);
+
+      const btn = document.getElementById("parseVacancyBtn");
+      btn.disabled = true;
+      btn.textContent = "Analizando...";
+      try {
+        const res = await fetch("/api/v1/vacancies/parse", { method: "POST", body: fd });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Error analizando vacante");
+        parsedVacancy = data;
+        renderVacancyPreview(data);
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Analizar Vacante";
+      }
+    });
+
+    const dropzone = document.getElementById("dropzone");
+    const cvInput = document.getElementById("cvFiles");
+    dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
+    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("dragover");
+      cvInput.files = e.dataTransfer.files;
+    });
+
+    document.getElementById("evaluateBtn").addEventListener("click", async () => {
+      const files = cvInput.files;
+      const vacText = document.getElementById("vacancyText").value.trim();
+      if (!files.length) { alert("Selecciona al menos un CV."); return; }
+      if (!parsedVacancy && !vacText) { alert("Analiza o pega primero la vacante."); return; }
+
+      const fd = new FormData();
+      if (parsedVacancy) fd.append("vacancy_json", JSON.stringify(parsedVacancy));
+      else fd.append("vacancy_text", vacText);
+      fd.append("max_concurrency", document.getElementById("concurrencyInput").value || "3");
+      for (const f of files) fd.append("files", f);
+
+      const status = document.getElementById("evalStatus");
+      const btn = document.getElementById("evaluateBtn");
+      btn.disabled = true;
+      status.textContent = `Evaluando ${files.length} hoja(s) de vida con Gemini...`;
+      try {
+        const res = await fetch("/api/v1/evaluations/batch", { method: "POST", body: fd });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Error evaluando lote");
+        if (data.vacancy) {
+          parsedVacancy = data.vacancy;
+          renderVacancyPreview(data.vacancy);
+        }
+        evaluationsList = data.ranked_candidates.map((item) => ({
+          evaluation: item.evaluation,
+          contact_pii: item.contact_pii,
+          source_file: item.source_file,
+          latest_feedback: null
+        }));
+        renderRanking();
+        status.textContent = `Completado en ${data.total_duration_seconds}s · ${data.ranked_candidates.length} evaluados, ${data.errors.length} errores · Tokens: ${data.usage_summary?.total_tokens || 0}.`;
+      } catch (err) {
+        status.textContent = `Error: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    async function loadHistory() {
+      const verdict = document.getElementById("verdictFilter").value;
+      const url = verdict ? `/api/v1/evaluations?verdict=${encodeURIComponent(verdict)}` : "/api/v1/evaluations";
+      const res = await fetch(url);
+      evaluationsList = await res.json();
+      renderRanking();
+    }
+    document.getElementById("loadHistoryBtn").addEventListener("click", loadHistory);
+    document.getElementById("verdictFilter").addEventListener("change", renderRanking);
+
+    function renderRanking() {
+      const filter = document.getElementById("verdictFilter").value;
+      const body = document.getElementById("rankingBody");
+      const rows = evaluationsList.filter((it) => !filter || it.evaluation.verdict === filter);
+      if (!rows.length) {
+        body.innerHTML = '<tr><td colspan="9" class="status-text">Sin resultados para mostrar.</td></tr>';
+        return;
+      }
+      body.innerHTML = rows.map((item, idx) => {
+        const ev = item.evaluation;
+        const cats = ev.category_scores;
+        const nameLabel = item.contact_pii?.full_name || item.source_file || ev.candidate_id;
+        const fb = item.latest_feedback ? verdictPill(item.latest_feedback.human_verdict) : '<span class="status-text">Pendiente</span>';
+        const activeCls = selectedItem?.evaluation?.evaluation_id === ev.evaluation_id ? "active" : "";
+        return `
+          <tr class="${activeCls}" data-eval-id="${escapeHtml(ev.evaluation_id)}">
+            <td>${idx + 1}</td>
+            <td><strong>${escapeHtml(nameLabel)}</strong><br/><span class="status-text">${escapeHtml(item.source_file || ev.candidate_id)}</span></td>
+            <td>${verdictPill(ev.verdict)}</td>
+            <td><strong>${ev.overall_score.toFixed(1)}%</strong></td>
+            <td>${scoreBar(cats.relevant_experience.score)}</td>
+            <td>${scoreBar(cats.must_have_skills.score)}</td>
+            <td>${scoreBar(cats.nice_to_have_skills.score)}</td>
+            <td>${scoreBar(cats.education_and_languages.score)}</td>
+            <td>${fb}</td>
+          </tr>
+        `;
+      }).join("");
+
+      body.querySelectorAll("tr[data-eval-id]").forEach((tr) => {
+        tr.addEventListener("click", () => {
+          const id = tr.getAttribute("data-eval-id");
+          const found = evaluationsList.find((x) => x.evaluation.evaluation_id === id);
+          if (found) showDetail(found);
+        });
+      });
+    }
+
+    function showDetail(item) {
+      selectedItem = item;
+      renderRanking();
+      const ev = item.evaluation;
+      const card = document.getElementById("detailCard");
+      card.classList.remove("hidden");
+      document.getElementById("detailHeader").innerHTML = `${escapeHtml(ev.vacancy_title)} — ${verdictPill(ev.verdict)} (${ev.overall_score.toFixed(1)}%)`;
+      document.getElementById("detailSummary").textContent = ev.executive_summary;
+
+      const piiParts = [item.contact_pii?.full_name, item.contact_pii?.email, item.contact_pii?.phone, item.contact_pii?.location].filter(Boolean);
+      document.getElementById("detailPii").textContent = piiParts.length ? `Contacto (PII): ${piiParts.join(" · ")}` : "";
+
+      const sec = ev.security_flags || {};
+      const alertBox = document.getElementById("securityAlert");
+      if (sec.prompt_injection_detected || sec.inconsistent_dates_warning) {
+        alertBox.classList.remove("hidden");
+        alertBox.textContent = `Alerta de integridad/seguridad: ${(sec.details || []).join(" | ")}`;
+      } else {
+        alertBox.classList.add("hidden");
+      }
+
+      document.getElementById("knockoutBody").innerHTML = (ev.knockout_requirements || []).map((k) => `
+        <tr>
+          <td>${escapeHtml(k.requirement)}</td>
+          <td><strong>${escapeHtml(k.status)}</strong></td>
+          <td>${escapeHtml(k.evidence || k.notes || "-")}</td>
+        </tr>
+      `).join("") || '<tr><td colspan="3" class="status-text">Sin requisitos excluyentes.</td></tr>';
+
+      document.getElementById("skillsBody").innerHTML = (ev.skills_matrix || []).map((s) => `
+        <tr>
+          <td><strong>${escapeHtml(s.skill)}</strong><br/><span class="status-text">${escapeHtml(s.skill_type)}</span></td>
+          <td>${escapeHtml(s.match_level)}</td>
+          <td>${escapeHtml(s.evidence || s.explanation)}</td>
+        </tr>
+      `).join("") || '<tr><td colspan="3" class="status-text">Sin habilidades registradas.</td></tr>';
+
+      document.getElementById("gapsList").innerHTML = (ev.detected_gaps || []).map((g) => `<li>${escapeHtml(g)}</li>`).join("") || "<li>Sin brechas críticas.</li>";
+      document.getElementById("questionsList").innerHTML = (ev.suggested_interview_questions || []).map((q) => `<li>${escapeHtml(q)}</li>`).join("") || "<li>Sin preguntas sugeridas.</li>";
+      document.getElementById("feedbackStatus").textContent = item.latest_feedback
+        ? `Última revisión: ${item.latest_feedback.human_verdict} (${item.latest_feedback.comment || "Sin comentario"})`
+        : "";
+    }
+
+    async function submitFeedback(agrees, verdict) {
+      if (!selectedItem) return;
+      const evalId = selectedItem.evaluation.evaluation_id;
+      const comment = document.getElementById("feedbackComment").value.trim();
+      const res = await fetch(`/api/v1/evaluations/${encodeURIComponent(evalId)}/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ agrees_with_agent: agrees, human_verdict: verdict, comment })
+      });
+      const data = await res.json();
+      if (!res.ok) { alert(data.detail || "Error guardando feedback"); return; }
+      selectedItem.latest_feedback = data;
+      document.getElementById("feedbackStatus").textContent = `Feedback guardado (${data.human_verdict}).`;
+      renderRanking();
+    }
+
+    document.getElementById("agreeBtn").addEventListener("click", () => {
+      if (selectedItem) submitFeedback(true, selectedItem.evaluation.verdict);
+    });
+    document.getElementById("sendFeedbackBtn").addEventListener("click", () => {
+      const hv = document.getElementById("humanVerdictSelect").value;
+      if (selectedItem) submitFeedback(hv === selectedItem.evaluation.verdict, hv);
+    });
+  </script>
+</body>
+</html>
