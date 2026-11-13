@@ -95,10 +95,11 @@ async def _resolve_vacancy(
     *,
     vacancy_json: str | None,
     vacancy_text: str | None,
+    vacancy_file: UploadFile | None,
     gemini_client: GeminiClient,
     settings: Settings,
 ) -> VacancySchema:
-    """Construye VacancySchema desde JSON pre-estructurado o texto libre."""
+    """Construye VacancySchema desde JSON pre-estructurado, archivo o texto libre."""
     if vacancy_json and vacancy_json.strip():
         try:
             return VacancySchema.model_validate_json(vacancy_json)
@@ -107,6 +108,20 @@ async def _resolve_vacancy(
                 status_code=422,
                 detail=f"vacancy_json inválido: {exc}",
             ) from exc
+
+    if vacancy_file is not None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            saved_path = await _write_upload_to_dir(vacancy_file, Path(tmp_dir), "vacancy.txt")
+            try:
+                return await asyncio.to_thread(
+                    extract_vacancy_from_file,
+                    saved_path,
+                    gemini_client=gemini_client,
+                    settings=settings,
+                    cache_manager=_default_cache_manager(),
+                )
+            except DocumentParseError as exc:
+                raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     if vacancy_text and vacancy_text.strip():
         return await asyncio.to_thread(
@@ -119,7 +134,7 @@ async def _resolve_vacancy(
 
     raise HTTPException(
         status_code=400,
-        detail="Debes proporcionar 'vacancy_json' o 'vacancy_text'.",
+        detail="Debes proporcionar 'vacancy_json', 'vacancy_text' o 'vacancy_file'.",
     )
 
 
@@ -184,6 +199,7 @@ async def evaluate_single_endpoint(
     file: Annotated[UploadFile, File()],
     vacancy_json: Annotated[str | None, Form()] = None,
     vacancy_text: Annotated[str | None, Form()] = None,
+    vacancy_file: Annotated[UploadFile | None, File()] = None,
     gemini_client: GeminiClient = Depends(get_gemini_client),  # noqa: B008
     settings: Settings = Depends(get_app_settings),  # noqa: B008
     repo: EvaluationRepository = Depends(get_repository),  # noqa: B008
@@ -192,6 +208,7 @@ async def evaluate_single_endpoint(
     vacancy = await _resolve_vacancy(
         vacancy_json=vacancy_json,
         vacancy_text=vacancy_text,
+        vacancy_file=vacancy_file,
         gemini_client=gemini_client,
         settings=settings,
     )
@@ -225,6 +242,7 @@ async def evaluate_batch_endpoint(
     files: Annotated[list[UploadFile], File()],
     vacancy_json: Annotated[str | None, Form()] = None,
     vacancy_text: Annotated[str | None, Form()] = None,
+    vacancy_file: Annotated[UploadFile | None, File()] = None,
     max_concurrency: Annotated[int, Form(ge=1, le=10)] = 3,
     gemini_client: GeminiClient = Depends(get_gemini_client),  # noqa: B008
     settings: Settings = Depends(get_app_settings),  # noqa: B008
@@ -242,6 +260,7 @@ async def evaluate_batch_endpoint(
     vacancy = await _resolve_vacancy(
         vacancy_json=vacancy_json,
         vacancy_text=vacancy_text,
+        vacancy_file=vacancy_file,
         gemini_client=gemini_client,
         settings=settings,
     )

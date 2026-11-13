@@ -193,3 +193,32 @@ def test_batch_evaluation_and_missing_feedback_404(
         json={"agrees_with_agent": True, "human_verdict": "ACEPTABLE"},
     )
     assert not_found.status_code == 404
+
+
+def test_single_evaluation_accepts_vacancy_file_upload(
+    api_client: tuple[TestClient, EvaluationRepository],
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    client, _ = api_client
+    monkeypatch.setattr(
+        "src.api.routes.extract_vacancy_from_file",
+        lambda *a, **kw: _dummy_vacancy(),
+    )
+
+    async def fake_eval(**_: object) -> tuple[EvaluationResultSchema, CandidateContactPII]:
+        return (
+            _dummy_eval("eval_vac_file", Verdict.ACEPTABLE, 85.0),
+            CandidateContactPII(candidate_id="cand_vac_file"),
+        )
+
+    monkeypatch.setattr("src.api.routes.aevaluate_cv_file_against_vacancy", fake_eval)
+
+    res = client.post(
+        "/api/v1/evaluations/single",
+        files=[
+            ("vacancy_file", ("vacante.txt", b"Vacante Python Senior", "text/plain")),
+            ("file", ("cv.txt", b"CV Python Senior", "text/plain")),
+        ],
+    )
+    assert res.status_code == 200
+    assert res.json()["evaluation"]["evaluation_id"] == "eval_vac_file"
