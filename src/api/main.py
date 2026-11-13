@@ -4,6 +4,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from src.api.routes import router
 
@@ -21,6 +22,10 @@ def create_app() -> FastAPI:
         version="0.1.0",
     )
     application.include_router(router)
+
+    assets_dir = STATIC_DIR / "assets"
+    if assets_dir.is_dir():
+        application.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
     @application.get("/", include_in_schema=False)
     def serve_dashboard() -> FileResponse:
