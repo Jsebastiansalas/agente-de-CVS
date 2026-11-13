@@ -55,6 +55,12 @@ class Settings(BaseSettings):
     # Persistencia local (SQLite)
     database_path: str = Field(default="data/evaluations.db")
 
+    # Seguridad y autenticación opcional de API
+    api_auth_key: str | None = Field(
+        default=None,
+        description="API Key opcional para proteger endpoints REST mediante cabecera X-API-Key",
+    )
+
     weights: ScoringWeights = Field(default_factory=ScoringWeights)
 
     @model_validator(mode="after")

@@ -222,3 +222,35 @@ def test_single_evaluation_accepts_vacancy_file_upload(
     )
     assert res.status_code == 200
     assert res.json()["evaluation"]["evaluation_id"] == "eval_vac_file"
+
+
+def test_api_key_authentication_protection(tmp_path: Path) -> None:
+    app = create_app()
+    secured_settings = Settings(
+        gemini_api_key="test-key",
+        database_path=str(tmp_path / "secured.db"),
+        api_auth_key="secret-api-token",
+    )
+    repo = EvaluationRepository(secured_settings.database_path)
+    app.dependency_overrides[get_app_settings] = lambda: secured_settings
+    app.dependency_overrides[get_repository] = lambda: repo
+
+    client = TestClient(app)
+
+    # Health check is public
+    health = client.get("/health")
+    assert health.status_code == 200
+
+    # API v1 without key fails with 401
+    unauth = client.get("/api/v1/evaluations")
+    assert unauth.status_code == 401
+    assert "No autorizado" in unauth.json()["detail"]
+
+    # API v1 with invalid key fails with 401
+    invalid = client.get("/api/v1/evaluations", headers={"X-API-Key": "wrong-token"})
+    assert invalid.status_code == 401
+
+    # API v1 with correct key succeeds with 200
+    valid = client.get("/api/v1/evaluations", headers={"X-API-Key": "secret-api-token"})
+    assert valid.status_code == 200
+

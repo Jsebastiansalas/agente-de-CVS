@@ -9,6 +9,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import Response
+from fastapi.security import APIKeyHeader
 from pydantic import BaseModel, Field
 
 from src.agent.batch import BatchEvaluationResult, aevaluate_batch
@@ -51,6 +52,24 @@ def get_repository(
 ) -> EvaluationRepository:
     """Dependencia inyectable para el repositorio SQLite."""
     return EvaluationRepository(settings.database_path)
+
+
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+
+def verify_api_key(
+    settings: Annotated[Settings, Depends(get_app_settings)],
+    api_key: str | None = Depends(api_key_header),
+) -> None:
+    """Valida la API key si api_auth_key está configurada."""
+    if settings.api_auth_key and api_key != settings.api_auth_key:
+        raise HTTPException(
+            status_code=401,
+            detail="No autorizado: API Key faltante o inválida (cabecera X-API-Key)",
+        )
+
+
+api_v1 = APIRouter(prefix="/api/v1", dependencies=[Depends(verify_api_key)])
 
 
 class SingleEvaluationResponse(BaseModel):
@@ -144,7 +163,7 @@ def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@router.post("/api/v1/vacancies/parse", response_model=VacancySchema)
+@api_v1.post("/vacancies/parse", response_model=VacancySchema)
 async def parse_vacancy_endpoint(
     vacancy_text: Annotated[str | None, Form()] = None,
     overrides_json: Annotated[str | None, Form()] = None,
@@ -194,7 +213,7 @@ async def parse_vacancy_endpoint(
     )
 
 
-@router.post("/api/v1/evaluations/single", response_model=SingleEvaluationResponse)
+@api_v1.post("/evaluations/single", response_model=SingleEvaluationResponse)
 async def evaluate_single_endpoint(
     file: Annotated[UploadFile, File()],
     vacancy_json: Annotated[str | None, Form()] = None,
@@ -237,7 +256,7 @@ async def evaluate_single_endpoint(
     )
 
 
-@router.post("/api/v1/evaluations/batch", response_model=BatchEvaluationResult)
+@api_v1.post("/evaluations/batch", response_model=BatchEvaluationResult)
 async def evaluate_batch_endpoint(
     files: Annotated[list[UploadFile], File()],
     vacancy_json: Annotated[str | None, Form()] = None,
@@ -289,7 +308,7 @@ async def evaluate_batch_endpoint(
     return batch_result
 
 
-@router.get("/api/v1/evaluations", response_model=list[StoredEvaluation])
+@api_v1.get("/evaluations", response_model=list[StoredEvaluation])
 def list_evaluations_endpoint(
     verdict: Annotated[Verdict | None, Query()] = None,
     limit: Annotated[int, Query(ge=1, le=500)] = 100,
@@ -299,7 +318,7 @@ def list_evaluations_endpoint(
     return repo.list_evaluations(verdict=verdict, limit=limit)
 
 
-@router.get("/api/v1/evaluations/export/csv")
+@api_v1.get("/evaluations/export/csv")
 def export_evaluations_csv_endpoint(
     verdict: Annotated[Verdict | None, Query()] = None,
     repo: EvaluationRepository = Depends(get_repository),  # noqa: B008
@@ -314,7 +333,7 @@ def export_evaluations_csv_endpoint(
     )
 
 
-@router.get("/api/v1/evaluations/{evaluation_id}", response_model=StoredEvaluation)
+@api_v1.get("/evaluations/{evaluation_id}", response_model=StoredEvaluation)
 def get_evaluation_endpoint(
     evaluation_id: str,
     repo: EvaluationRepository = Depends(get_repository),  # noqa: B008
@@ -326,8 +345,8 @@ def get_evaluation_endpoint(
     return stored
 
 
-@router.post(
-    "/api/v1/evaluations/{evaluation_id}/feedback",
+@api_v1.post(
+    "/evaluations/{evaluation_id}/feedback",
     response_model=FeedbackRecord,
 )
 def add_feedback_endpoint(
@@ -347,8 +366,8 @@ def add_feedback_endpoint(
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
-@router.get(
-    "/api/v1/evaluations/{evaluation_id}/feedback",
+@api_v1.get(
+    "/evaluations/{evaluation_id}/feedback",
     response_model=list[FeedbackRecord],
 )
 def list_feedback_endpoint(
@@ -359,3 +378,7 @@ def list_feedback_endpoint(
     if repo.get_evaluation(evaluation_id) is None:
         raise HTTPException(status_code=404, detail="Evaluación no encontrada.")
     return repo.list_feedback(evaluation_id)
+
+
+router.include_router(api_v1)
+
