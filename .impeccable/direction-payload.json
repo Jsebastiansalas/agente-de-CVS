@@ -1,0 +1,185 @@
+{
+  "title": "Elige la dirección visual del Evaluador de CVs",
+  "question": "La selección aleatoria asignó Mesa de Dictamen Dual-Pane (Índice 5). Puedes aprobarla, elegir una alternativa o pedir otra tirada.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Mesa de Dictamen Dual-Pane",
+      "kicker": "LA ASIGNADA",
+      "lineage": "Actas de adjudicación editorial y mesas de auditoría legal en papel mineral",
+      "thesis": "Un escritorio de doble panel sobre papel mineral cálido donde el ranking de candidatos y las citas textuales del CV conviven sin cambiar de pantalla.",
+      "palette": [
+        "#f4f3ef",
+        "#ffffff",
+        "#151821",
+        "#1d4ed8",
+        "#047857"
+      ],
+      "materials": [
+        "papel mineral mate",
+        "filetes de 1px",
+        "cifras tabulares"
+      ],
+      "viewport": "Barra superior oscura con estado de API; banda superior de Vacante + Carga por lotes; abajo 42% tabla de ranking filtrable y 58% acta auditable con citas verbatim.",
+      "risk": "Si se abusa de bordes y cajas internas, puede verse recargado; exige filetes limpios y jerarquía tipográfica nítida.",
+      "raised": [
+        {
+          "from": "digital-design-canon-dark-first-developer-console",
+          "raise": "Paneles persistentes divididos por costuras de 1px en lugar de sombras flotantes, y aislamiento deliberado de acciones destructivas o de corrección."
+        },
+        {
+          "from": "editorial-sequence-montage-botanical-folio-season",
+          "raise": "Registro visual idéntico entre expedientes: Veredicto, Seguridad, Knock-out, Matriz de Evidencias y Feedback ocupan siempre la misma posición."
+        }
+      ],
+      "wireframe": {
+        "cols": 12,
+        "rows": 10,
+        "regions": [
+          { "label": "Barra sistema + Salud API", "x": 0, "y": 0, "w": 12, "h": 1, "accent": true },
+          { "label": "Contrato de Vacante (editable)", "x": 0, "y": 1, "w": 6, "h": 3 },
+          { "label": "Carga de CVs (1–50) + Concurrencia", "x": 6, "y": 1, "w": 6, "h": 3 },
+          { "label": "Ranking y Filtros (42%)", "x": 0, "y": 4, "w": 5, "h": 6 },
+          { "label": "Acta de Dictamen y Citas (58%)", "x": 5, "y": 4, "w": 7, "h": 6 }
+        ]
+      }
+    },
+    {
+      "id": "model-pick",
+      "label": "Índice Editorial Suizo",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Índices tipográficos suizos y folios de archivo jurídico",
+      "thesis": "Tipografía grotesca nítida sobre lino cálido con una columna maestra de candidatos a la izquierda y expediente anotado de lectura corrida a la derecha.",
+      "palette": [
+        "#f7f5f0",
+        "#111318",
+        "#2563eb",
+        "#b45309"
+      ],
+      "materials": [
+        "lino editorial",
+        "reglas tipográficas",
+        "citas en bloque"
+      ],
+      "viewport": "Navegación superior compacta con pasos Vacante / Lote / Historial y un tablero maestro de dos columnas para auditar citas sin fricción.",
+      "risk": "Es la estética editorial más predecible para herramientas de lectura documental.",
+      "wireframe": {
+        "cols": 12,
+        "rows": 10,
+        "regions": [
+          { "label": "Cabecera de pasos + Exportar CSV", "x": 0, "y": 0, "w": 12, "h": 1 },
+          { "label": "Lista maestra de candidatos", "x": 0, "y": 1, "w": 4, "h": 9 },
+          { "label": "Folio editorial del candidato", "x": 4, "y": 1, "w": 8, "h": 9, "accent": true }
+        ]
+      }
+    },
+    {
+      "id": "challenger-developer-console",
+      "label": "Consola Técnica en Grafito",
+      "verdict": "competitive",
+      "lineage": "Consolas de desarrollo dark-first de alto contraste",
+      "thesis": "Superficie oscura en grafito con divisiones de 1px, acentos reservados exclusivamente para veredictos y paneles acoplados sin distracciones.",
+      "palette": [
+        "#111317",
+        "#181b21",
+        "#e5e7eb",
+        "#3b82f6",
+        "#10b981"
+      ],
+      "materials": [
+        "grafito mate",
+        "costuras de 1px",
+        "telemetría monospace"
+      ],
+      "viewport": "Riel lateral de vacantes e historial, zona central compacta de ranking y panel derecho con JSON/citas y feedback.",
+      "case": "Excelente densidad y disciplina de paneles; cede levemente frente a papel claro en jornadas largas de lectura de RRHH.",
+      "risk": "Puede sentirse demasiado ingenieril para perfiles no técnicos de RRHH.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-dark-first-developer-console-hero.webp",
+      "wireframe": {
+        "cols": 12,
+        "rows": 10,
+        "regions": [
+          { "label": "Riel navegación", "x": 0, "y": 0, "w": 2, "h": 10, "accent": true },
+          { "label": "Lote + Ranking", "x": 2, "y": 0, "w": 4, "h": 10 },
+          { "label": "Inspector Técnico de CV", "x": 6, "y": 0, "w": 6, "h": 10 }
+        ]
+      }
+    },
+    {
+      "id": "challenger-split-flap",
+      "label": "Tablero Ferroviario Split-Flap",
+      "verdict": "declined",
+      "lineage": "Tableros mecánicos de salidas en estaciones",
+      "thesis": "Filas mecánicas de alto contraste pensadas para estado en tiempo real.",
+      "palette": [
+        "#141414",
+        "#f5f5f5",
+        "#f59e0b"
+      ],
+      "materials": [
+        "acero cepillado",
+        "placas mate"
+      ],
+      "case": "Sacrifica la legibilidad de citas textuales largas y razones de knock-out en español.",
+      "kept": "Ritmo columnar estricto con celdas numéricas alineadas para puntajes y latencia.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse-hero.webp"
+    },
+    {
+      "id": "challenger-botanical-folio",
+      "label": "Folio Botánico Secuencial",
+      "verdict": "declined",
+      "lineage": "Láminas científicas de estados secuenciales",
+      "thesis": "Láminas cremosas a escala fija comparando etapas lado a lado.",
+      "palette": [
+        "#f8f4e8",
+        "#2f4f3e",
+        "#991b1b"
+      ],
+      "materials": [
+        "papel crema",
+        "filetes sepia"
+      ],
+      "case": "No resuelve tablas densas de hasta 50 candidatos ni carga por lotes.",
+      "kept": "Ubicación fija idéntica de cada bloque entre candidatos para comparar por memoria muscular.",
+      "hero": "https://impeccable.style/worlds/cards/editorial-sequence-montage-botanical-folio-season-hero.webp"
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": false
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "Estándar clásico SaaS de RRHH",
+    "thesis": "Layout SaaS limpio tradicional con tarjetas blancas sobre fondo gris claro y acento azul corporativo.",
+    "palette": [
+      "#f8fafc",
+      "#ffffff",
+      "#0f172a",
+      "#1d4ed8"
+    ],
+    "materials": [
+      "superficies limpias",
+      "rejilla estándar"
+    ],
+    "viewport": "Pasos superiores de Vacante y CVs seguidos por tabla de resultados y detalle lateral.",
+    "risk": "Familiaridad inmediata al costo de lucir genérico frente a cualquier SaaS estándar.",
+    "wireframe": {
+      "cols": 12,
+      "rows": 10,
+      "regions": [
+        { "label": "Topbar", "x": 0, "y": 0, "w": 12, "h": 1 },
+        { "label": "Vacante + Lote", "x": 0, "y": 1, "w": 12, "h": 3 },
+        { "label": "Ranking", "x": 0, "y": 4, "w": 5, "h": 6 },
+        { "label": "Detalle", "x": 5, "y": 4, "w": 7, "h": 6 }
+      ]
+    }
+  },
+  "steer": true
+}

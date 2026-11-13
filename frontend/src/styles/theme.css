@@ -1,0 +1,83 @@
+/* Variables del Sistema de Diseño: Mesa de Dictamen Dual-Pane */
+:root {
+  /* Lienzo y Superficies de Papel Mineral */
+  --bg-canvas: #f4f3ef;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-subtle: #f9f8f5;
+  --bg-muted: #eeece6;
+
+  /* Tipografía y Tinta */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --text-primary: #151821;
+  --text-secondary: #525866;
+  --text-muted: #7e8695;
+  --text-on-accent: #ffffff;
+
+  /* Bordes y Costuras Limpias */
+  --border-subtle: #e5e3dc;
+  --border-default: #d8d5cb;
+  --border-strong: #bcbaae;
+  --border-focus: #1d4ed8;
+
+  /* Acentos de Acción */
+  --accent-primary: #1d4ed8;
+  --accent-primary-hover: #1e40af;
+  --accent-primary-active: #172554;
+  --accent-subtle: #eff6ff;
+
+  /* Veredictos y Estados Semánticos (Alto Contraste WCAG AAA/AA) */
+  --badge-ok-bg: #ecfdf5;
+  --badge-ok-text: #047857;
+  --badge-ok-border: #a7f3d0;
+
+  --badge-warn-bg: #fffbeb;
+  --badge-warn-text: #b45309;
+  --badge-warn-border: #fde68a;
+
+  --badge-bad-bg: #fff1f2;
+  --badge-bad-text: #b91c1c;
+  --badge-bad-border: #fecdd3;
+
+  --badge-neutral-bg: #f3f4f6;
+  --badge-neutral-text: #374151;
+  --badge-neutral-border: #e5e7eb;
+
+  /* Radios y Elevaciones (Sutiles y Físicas) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 2px rgba(21, 24, 33, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(21, 24, 33, 0.06), 0 2px 4px -2px rgba(21, 24, 33, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(21, 24, 33, 0.08), 0 4px 6px -4px rgba(21, 24, 33, 0.04);
+
+  /* Tiempos de Microinteracción */
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modos de accesibilidad y selección */
+::selection {
+  background-color: #bfdbfe;
+  color: #1e3a8a;
+}
+
+/* Scrollbar tematizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
