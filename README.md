@@ -11,13 +11,26 @@ Copy-Item .env.example .env
 # Edita .env con tu GEMINI_API_KEY
 ```
 
-## Levantar API y Dashboard MVP
+## Levantar API y Dashboard React
 
 ```powershell
+# 1. Compilar bundle de React (emite en src/api/static)
+cd frontend
+npm install
+npm run build
+cd ..
+
+# 2. Iniciar servidor FastAPI
 .\.venv\Scripts\uvicorn.exe src.api.main:app --reload --port 8000
 ```
 
-- Dashboard visual: `http://localhost:8000/`
+- Dashboard interactivo (Mesa de Dictamen Dual-Pane en React): `http://localhost:8000/`
+- Servidor de desarrollo Vite con Hot Module Replacement (HMR):
+  ```powershell
+  cd frontend
+  npm run dev
+  # Abre http://localhost:5173/ con proxy automático hacia http://127.0.0.1:8000
+  ```
 - Documentación interactiva Swagger/OpenAPI: `http://localhost:8000/docs`
 
 ## Ejecutar con Docker y Docker Compose
