@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     gemini_api_key: str = Field(default="", description="Clave de API de Google Gemini")
     gemini_api_version: str = Field(default="v1beta")
     gemini_flash_model: str = Field(default="gemini-2.5-flash")
-    gemini_pro_model: str = Field(default="gemini-2.5-pro")
+    gemini_pro_model: str = Field(default="gemini-2.5-flash")
     gemini_temperature: float = Field(default=0.0, ge=0.0, le=2.0)
     gemini_max_retries: int = Field(default=3, ge=1, le=10)
     gemini_retry_base_delay: float = Field(default=1.0, gt=0.0)
