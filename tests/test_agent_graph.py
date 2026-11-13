@@ -1,6 +1,7 @@
 """Pruebas de integración del grafo LangGraph y nodos (HU-2.1, HU-2.2, HU-2.3, HU-2.5)."""
 
-from unittest.mock import MagicMock
+from typing import Any
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
@@ -54,10 +55,9 @@ def _sample_candidate() -> CandidateSchema:
     )
 
 
-def _build_mock_gemini() -> MagicMock:
-    mock_client = MagicMock()
-    mock_client.generate_structured.side_effect = [
-        _KnockoutBatchResponse(
+def _dispatch_schema_response(*, response_schema: type[Any], **_: Any) -> Any:
+    if response_schema is _KnockoutBatchResponse:
+        return _KnockoutBatchResponse(
             knockout_requirements=[
                 KnockoutEvaluation(
                     requirement="4+ años en Python",
@@ -70,8 +70,9 @@ def _build_mock_gemini() -> MagicMock:
                     status=KnockoutStatus.NO_MENCIONADO_EN_CV,
                 ),
             ]
-        ),
-        _SkillsAndSubscoresResponse(
+        )
+    if response_schema is _SkillsAndSubscoresResponse:
+        return _SkillsAndSubscoresResponse(
             skills_matrix=[
                 SkillEvaluation(
                     skill="FastAPI",
@@ -100,8 +101,9 @@ def _build_mock_gemini() -> MagicMock:
                 education_and_languages_score=50.0,
                 education_and_languages_justification="No especifica inglés.",
             ),
-        ),
-        _NarrativeReportOutput(
+        )
+    if response_schema is _NarrativeReportOutput:
+        return _NarrativeReportOutput(
             executive_summary=(
                 "Candidato sólido con 56 meses de experiencia en Python y FastAPI. "
                 "Queda con reservas porque no especifica su nivel de inglés."
@@ -115,8 +117,14 @@ def _build_mock_gemini() -> MagicMock:
                 "¿Qué diferencias conoces entre MySQL y PostgreSQL en producción?",
                 "¿Has trabajado con orquestadores además de Docker?",
             ],
-        ),
-    ]
+        )
+    raise AssertionError(f"Esquema inesperado en mock: {response_schema}")
+
+
+def _build_mock_gemini() -> MagicMock:
+    mock_client = MagicMock()
+    mock_client.generate_structured.side_effect = _dispatch_schema_response
+    mock_client.agenerate_structured = AsyncMock(side_effect=_dispatch_schema_response)
     return mock_client
 
 
@@ -131,9 +139,7 @@ def test_evaluate_candidate_sync_end_to_end() -> None:
     )
 
     assert result.evaluation_id == "eval_test_01"
-    # 90*0.40 + 85*0.35 + 60*0.15 + 50*0.10 = 36 + 29.75 + 9 + 5 = 79.75
     assert result.overall_score == 79.75
-    # Aunque supera 75, Inglés B2 quedó NO_MENCIONADO_EN_CV -> ACEPTABLE_CON_RESERVAS
     assert result.verdict == Verdict.ACEPTABLE_CON_RESERVAS
     assert len(result.suggested_interview_questions) == 3
     assert mock_client.generate_structured.call_count == 3
@@ -151,6 +157,7 @@ async def test_evaluate_candidate_async_end_to_end() -> None:
     )
     assert result.evaluation_id == "eval_async_01"
     assert result.verdict == Verdict.ACEPTABLE_CON_RESERVAS
+    assert mock_client.agenerate_structured.call_count == 3
 
 
 def test_clamp_words_limits_summary_to_150_words() -> None:

@@ -1,5 +1,6 @@
 """Extractor estructurado de Hojas de Vida con separación de PII y cálculo de tiempo (HU-1.3)."""
 
+import asyncio
 import uuid
 from datetime import date
 from pathlib import Path
@@ -57,30 +58,13 @@ class ExtractedCandidateBundle(BaseModel):
     date_warnings: list[str] = Field(default_factory=list)
 
 
-def extract_candidate(
-    raw_text: str,
+def _finalize_candidate_extraction(
+    raw_extracted: _RawCandidateExtraction,
     *,
-    candidate_id: str | None = None,
-    reference_date: date | None = None,
-    gemini_client: GeminiClient | None = None,
-    settings: Settings | None = None,
+    assigned_id: str,
+    reference_date: date | None,
 ) -> ExtractedCandidateBundle:
-    """Extrae el perfil estructurado, calcula meses exactos y anonimiza el CV."""
-    cleaned = raw_text.strip()
-    if not cleaned:
-        raise ValueError("El texto de la hoja de vida no puede estar vacío.")
-
-    cfg = settings or get_settings()
-    client = gemini_client or GeminiClient(settings=cfg)
-    assigned_id = candidate_id or f"cand_anon_{uuid.uuid4().hex[:8]}"
-
-    raw_extracted = client.generate_structured(
-        model=cfg.gemini_flash_model,
-        system_instruction=CANDIDATE_EXTRACTION_INSTRUCTION,
-        contents=f"<raw_cv>\n{cleaned}\n</raw_cv>",
-        response_schema=_RawCandidateExtraction,
-    )
-
+    """Separa PII, calcula experiencia sin traslapes y anonimiza el perfil."""
     contact_pii = CandidateContactPII(
         candidate_id=assigned_id,
         full_name=raw_extracted.full_name,
@@ -113,6 +97,66 @@ def extract_candidate(
     )
 
 
+def extract_candidate(
+    raw_text: str,
+    *,
+    candidate_id: str | None = None,
+    reference_date: date | None = None,
+    gemini_client: GeminiClient | None = None,
+    settings: Settings | None = None,
+) -> ExtractedCandidateBundle:
+    """Extrae el perfil estructurado, calcula meses exactos y anonimiza el CV."""
+    cleaned = raw_text.strip()
+    if not cleaned:
+        raise ValueError("El texto de la hoja de vida no puede estar vacío.")
+
+    cfg = settings or get_settings()
+    client = gemini_client or GeminiClient(settings=cfg)
+    assigned_id = candidate_id or f"cand_anon_{uuid.uuid4().hex[:8]}"
+
+    raw_extracted = client.generate_structured(
+        model=cfg.gemini_flash_model,
+        system_instruction=CANDIDATE_EXTRACTION_INSTRUCTION,
+        contents=f"<raw_cv>\n{cleaned}\n</raw_cv>",
+        response_schema=_RawCandidateExtraction,
+    )
+    return _finalize_candidate_extraction(
+        raw_extracted,
+        assigned_id=assigned_id,
+        reference_date=reference_date,
+    )
+
+
+async def aextract_candidate(
+    raw_text: str,
+    *,
+    candidate_id: str | None = None,
+    reference_date: date | None = None,
+    gemini_client: GeminiClient | None = None,
+    settings: Settings | None = None,
+) -> ExtractedCandidateBundle:
+    """Versión asíncrona de extract_candidate."""
+    cleaned = raw_text.strip()
+    if not cleaned:
+        raise ValueError("El texto de la hoja de vida no puede estar vacío.")
+
+    cfg = settings or get_settings()
+    client = gemini_client or GeminiClient(settings=cfg)
+    assigned_id = candidate_id or f"cand_anon_{uuid.uuid4().hex[:8]}"
+
+    raw_extracted = await client.agenerate_structured(
+        model=cfg.gemini_flash_model,
+        system_instruction=CANDIDATE_EXTRACTION_INSTRUCTION,
+        contents=f"<raw_cv>\n{cleaned}\n</raw_cv>",
+        response_schema=_RawCandidateExtraction,
+    )
+    return _finalize_candidate_extraction(
+        raw_extracted,
+        assigned_id=assigned_id,
+        reference_date=reference_date,
+    )
+
+
 def extract_candidate_from_file(
     file_path: str | Path,
     *,
@@ -126,6 +170,32 @@ def extract_candidate_from_file(
     client = gemini_client or GeminiClient(settings=cfg)
     parsed = parse_document(file_path, gemini_client=client, settings=cfg)
     return extract_candidate(
+        parsed.text,
+        candidate_id=candidate_id,
+        reference_date=reference_date,
+        gemini_client=client,
+        settings=cfg,
+    )
+
+
+async def aextract_candidate_from_file(
+    file_path: str | Path,
+    *,
+    candidate_id: str | None = None,
+    reference_date: date | None = None,
+    gemini_client: GeminiClient | None = None,
+    settings: Settings | None = None,
+) -> ExtractedCandidateBundle:
+    """Versión asíncrona de extract_candidate_from_file."""
+    cfg = settings or get_settings()
+    client = gemini_client or GeminiClient(settings=cfg)
+    parsed = await asyncio.to_thread(
+        parse_document,
+        file_path,
+        gemini_client=client,
+        settings=cfg,
+    )
+    return await aextract_candidate(
         parsed.text,
         candidate_id=candidate_id,
         reference_date=reference_date,

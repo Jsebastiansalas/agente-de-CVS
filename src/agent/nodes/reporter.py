@@ -1,4 +1,4 @@
-"""Nodo 4: Generador de resumen ejecutivo, brechas y preguntas de entrevista (HU-2.5)."""
+"""Nodo 4: Generador de resumen ejecutivo y preguntas de entrevista (HU-2.5)."""
 
 import json
 import uuid
@@ -33,16 +33,7 @@ def _clamp_words(text: str, max_words: int = MAX_SUMMARY_WORDS) -> str:
     return " ".join(words[:max_words]).rstrip(".,;:") + "..."
 
 
-def generate_report_node(
-    state: AgentState,
-    *,
-    gemini_client: GeminiClient | None = None,
-    settings: Settings | None = None,
-) -> dict[str, EvaluationResultSchema]:
-    """Redacta el resumen ejecutivo, brechas y preguntas y ensambla el resultado final."""
-    cfg = settings or get_settings()
-    client = gemini_client or GeminiClient(settings=cfg)
-
+def _build_report_prompt(state: AgentState) -> str:
     vacancy = state["vacancy"]
     candidate = state["candidate"]
     knockout_results = state.get("knockout_results", [])
@@ -50,8 +41,6 @@ def generate_report_node(
     category_scores = state["category_scores"]
     overall_score = state["overall_score"]
     verdict = state["verdict"]
-    security_flags = state.get("security_flags", SecurityFlags())
-    evaluation_id = state.get("evaluation_id") or f"eval_{uuid.uuid4().hex[:8]}"
 
     eval_context = {
         "vacancy_title": vacancy.title,
@@ -62,7 +51,7 @@ def generate_report_node(
         "skills_matrix": [s.model_dump(mode="json") for s in skills_matrix],
     }
 
-    prompt = (
+    return (
         "Redacta el resumen ejecutivo (máximo 150 palabras), lista las brechas detectadas "
         "y propón entre 3 y 5 preguntas de entrevista personalizadas.\n\n"
         f"<evaluation_facts>\n{json.dumps(eval_context, ensure_ascii=False, indent=2)}\n"
@@ -70,26 +59,62 @@ def generate_report_node(
         f"{serialize_candidate_for_prompt(candidate)}"
     )
 
-    narrative = client.generate_structured(
-        model=cfg.gemini_flash_model,
-        system_instruction=REPORTER_SYSTEM_INSTRUCTION,
-        contents=prompt,
-        response_schema=_NarrativeReportOutput,
-    )
 
-    final_result = EvaluationResultSchema(
+def _assemble_evaluation(
+    state: AgentState,
+    narrative: _NarrativeReportOutput,
+) -> EvaluationResultSchema:
+    vacancy = state["vacancy"]
+    candidate = state["candidate"]
+    evaluation_id = state.get("evaluation_id") or f"eval_{uuid.uuid4().hex[:8]}"
+
+    return EvaluationResultSchema(
         evaluation_id=evaluation_id,
         vacancy_title=vacancy.title,
         candidate_id=candidate.candidate_id,
-        verdict=verdict,
-        overall_score=overall_score,
-        category_scores=category_scores,
-        knockout_requirements=knockout_results,
-        skills_matrix=skills_matrix,
+        verdict=state["verdict"],
+        overall_score=state["overall_score"],
+        category_scores=state["category_scores"],
+        knockout_requirements=state.get("knockout_results", []),
+        skills_matrix=state.get("skills_matrix", []),
         executive_summary=_clamp_words(narrative.executive_summary),
         detected_gaps=narrative.detected_gaps,
         suggested_interview_questions=narrative.suggested_interview_questions[:5],
-        security_flags=security_flags,
+        security_flags=state.get("security_flags", SecurityFlags()),
     )
 
-    return {"final_evaluation": final_result}
+
+def generate_report_node(
+    state: AgentState,
+    *,
+    gemini_client: GeminiClient | None = None,
+    settings: Settings | None = None,
+) -> dict[str, EvaluationResultSchema]:
+    """Redacta el resumen ejecutivo y ensambla el resultado final de forma síncrona."""
+    cfg = settings or get_settings()
+    client = gemini_client or GeminiClient(settings=cfg)
+    narrative = client.generate_structured(
+        model=cfg.gemini_flash_model,
+        system_instruction=REPORTER_SYSTEM_INSTRUCTION,
+        contents=_build_report_prompt(state),
+        response_schema=_NarrativeReportOutput,
+    )
+    return {"final_evaluation": _assemble_evaluation(state, narrative)}
+
+
+async def agenerate_report_node(
+    state: AgentState,
+    *,
+    gemini_client: GeminiClient | None = None,
+    settings: Settings | None = None,
+) -> dict[str, EvaluationResultSchema]:
+    """Redacta el resumen ejecutivo y ensambla el resultado final de forma asíncrona."""
+    cfg = settings or get_settings()
+    client = gemini_client or GeminiClient(settings=cfg)
+    narrative = await client.agenerate_structured(
+        model=cfg.gemini_flash_model,
+        system_instruction=REPORTER_SYSTEM_INSTRUCTION,
+        contents=_build_report_prompt(state),
+        response_schema=_NarrativeReportOutput,
+    )
+    return {"final_evaluation": _assemble_evaluation(state, narrative)}

@@ -1,7 +1,5 @@
 """Nodo 2: Comparador semántico de habilidades y sub-puntajes (HU-2.3)."""
 
-import json
-
 from pydantic import BaseModel, Field
 
 from src.agent.prompts import (
@@ -22,42 +20,54 @@ class _SkillsAndSubscoresResponse(BaseModel):
     subscores: SubscoresOutput
 
 
+def _build_skills_prompt(state: AgentState) -> str:
+    vacancy = state["vacancy"]
+    candidate = state["candidate"]
+    return (
+        "Evalúa la matriz de habilidades y asigna los 4 sub-puntajes (0-100).\n"
+        f"Experiencia total calculada: {candidate.total_experience_months} meses "
+        f"(requerida por vacante: {vacancy.min_years_experience} años).\n\n"
+        f"{serialize_vacancy_for_prompt(vacancy)}\n\n"
+        f"{serialize_candidate_for_prompt(candidate)}"
+    )
+
+
 def match_skills_node(
     state: AgentState,
     *,
     gemini_client: GeminiClient | None = None,
     settings: Settings | None = None,
 ) -> dict[str, object]:
-    """Evalúa habilidades obligatorias/deseables con evidencia y calcula sub-puntajes."""
-    vacancy = state["vacancy"]
-    candidate = state["candidate"]
-    knockout_results = state.get("knockout_results", [])
-
+    """Evalúa habilidades y sub-puntajes de forma síncrona."""
     cfg = settings or get_settings()
     client = gemini_client or GeminiClient(settings=cfg)
-
-    knockout_json = json.dumps(
-        [item.model_dump(mode="json") for item in knockout_results],
-        ensure_ascii=False,
-        indent=2,
-    )
-
-    prompt = (
-        "Evalúa la matriz de habilidades y asigna los 4 sub-puntajes (0-100).\n"
-        f"Experiencia total calculada: {candidate.total_experience_months} meses "
-        f"(requerida por vacante: {vacancy.min_years_experience} años).\n\n"
-        f"{serialize_vacancy_for_prompt(vacancy)}\n\n"
-        f"<knockout_summary>\n{knockout_json}\n</knockout_summary>\n\n"
-        f"{serialize_candidate_for_prompt(candidate)}"
-    )
-
     response = client.generate_structured(
         model=cfg.gemini_pro_model,
         system_instruction=SKILLS_MATCHER_SYSTEM_INSTRUCTION,
-        contents=prompt,
+        contents=_build_skills_prompt(state),
         response_schema=_SkillsAndSubscoresResponse,
     )
+    return {
+        "skills_matrix": response.skills_matrix,
+        "subscores": response.subscores,
+    }
 
+
+async def amatch_skills_node(
+    state: AgentState,
+    *,
+    gemini_client: GeminiClient | None = None,
+    settings: Settings | None = None,
+) -> dict[str, object]:
+    """Evalúa habilidades y sub-puntajes de forma asíncrona."""
+    cfg = settings or get_settings()
+    client = gemini_client or GeminiClient(settings=cfg)
+    response = await client.agenerate_structured(
+        model=cfg.gemini_pro_model,
+        system_instruction=SKILLS_MATCHER_SYSTEM_INSTRUCTION,
+        contents=_build_skills_prompt(state),
+        response_schema=_SkillsAndSubscoresResponse,
+    )
     return {
         "skills_matrix": response.skills_matrix,
         "subscores": response.subscores,
