@@ -23,3 +23,13 @@ htmlcov/
 *.sqlite3
 data/
 evals/reports/
+
+# Node & Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Impeccable temporary session files
+.impeccable/questions/
+.impeccable/mocks/
+
+
