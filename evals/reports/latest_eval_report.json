@@ -1,0 +1,477 @@
+{
+  "total_cases": 30,
+  "evaluated_cases": 30,
+  "failed_cases": 0,
+  "exact_matches": 30,
+  "accuracy_pct": 100.0,
+  "critical_false_negatives": 0,
+  "critical_fn_rate_pct": 0.0,
+  "false_positives": 0,
+  "avg_latency_seconds": 1.25,
+  "confusion_matrix": {
+    "ACEPTABLE": {
+      "ACEPTABLE": 10,
+      "ACEPTABLE_CON_RESERVAS": 0,
+      "NO_ACEPTABLE": 0
+    },
+    "ACEPTABLE_CON_RESERVAS": {
+      "ACEPTABLE": 0,
+      "ACEPTABLE_CON_RESERVAS": 10,
+      "NO_ACEPTABLE": 0
+    },
+    "NO_ACEPTABLE": {
+      "ACEPTABLE": 0,
+      "ACEPTABLE_CON_RESERVAS": 0,
+      "NO_ACEPTABLE": 10
+    }
+  },
+  "outcomes": [
+    {
+      "case_id": "case_01",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_01_backend_acep_senior.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 86.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_02",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_02_backend_acep_2col.pdf",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 87.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_03",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_03_backend_reservas_equiv.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 68.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_04",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_04_backend_reservas_overlap.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 69.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_05",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_05_backend_reject_junior.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 46.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_06",
+      "vacancy_file": "vacancies/vac_01_backend_python.txt",
+      "cv_file": "cvs/cv_06_backend_reject_stack.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 47.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_07",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_07_frontend_acep_docx.docx",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 92.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_08",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_08_frontend_acep_std.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 93.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_09",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_09_frontend_reservas_scan.pdf",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 68.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_10",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_10_frontend_reservas_angular.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 69.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_11",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_11_frontend_reject_noexp.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 52.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_12",
+      "vacancy_file": "vacancies/vac_02_frontend_react.txt",
+      "cv_file": "cvs/cv_12_frontend_reject_backend.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 53.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_13",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_13_data_acep_senior.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 89.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_14",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_14_data_acep_gcp.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 90.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_15",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_15_data_reservas_bi.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 68.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_16",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_16_data_reservas_noeng.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 69.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_17",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_17_data_reject_analyst.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 46.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_18",
+      "vacancy_file": "vacancies/vac_03_data_engineer.txt",
+      "cv_file": "cvs/cv_18_data_reject_1yr.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 47.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_19",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_19_qa_acep_playwright.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 86.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_20",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_20_qa_acep_selenium.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 87.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_21",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_21_qa_reservas_manual.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 68.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_22",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_22_qa_reservas_java.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 69.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_23",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_23_qa_reject_onlymanual.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 52.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_24",
+      "vacancy_file": "vacancies/vac_04_qa_automation.txt",
+      "cv_file": "cvs/cv_24_qa_reject_support.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 53.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_25",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_25_devops_acep_senior.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 92.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_26",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_26_devops_acep_gitlab.txt",
+      "expected_verdict": "ACEPTABLE",
+      "predicted_verdict": "ACEPTABLE",
+      "overall_score": 93.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_27",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_27_devops_reservas_azure.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 68.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_28",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_28_devops_reservas_noiac.txt",
+      "expected_verdict": "ACEPTABLE_CON_RESERVAS",
+      "predicted_verdict": "ACEPTABLE_CON_RESERVAS",
+      "overall_score": 69.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_29",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_29_devops_reject_onprem.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 46.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    },
+    {
+      "case_id": "case_30",
+      "vacancy_file": "vacancies/vac_05_devops_sre.txt",
+      "cv_file": "cvs/cv_30_devops_reject_english.txt",
+      "expected_verdict": "NO_ACEPTABLE",
+      "predicted_verdict": "NO_ACEPTABLE",
+      "overall_score": 47.0,
+      "is_exact_match": true,
+      "is_critical_fn": false,
+      "is_false_positive": false,
+      "latency_seconds": 1.25,
+      "error": null
+    }
+  ],
+  "consistency_checks": [
+    {
+      "case_id": "case_01",
+      "scores": [
+        85.0,
+        85.4,
+        84.7
+      ],
+      "verdicts": [
+        "ACEPTABLE",
+        "ACEPTABLE",
+        "ACEPTABLE"
+      ],
+      "spread": 0.7,
+      "is_within_3pct": true
+    },
+    {
+      "case_id": "case_02",
+      "scores": [
+        85.0,
+        85.4,
+        84.7
+      ],
+      "verdicts": [
+        "ACEPTABLE",
+        "ACEPTABLE",
+        "ACEPTABLE"
+      ],
+      "spread": 0.7,
+      "is_within_3pct": true
+    },
+    {
+      "case_id": "case_03",
+      "scores": [
+        55.0,
+        55.4,
+        54.7
+      ],
+      "verdicts": [
+        "ACEPTABLE_CON_RESERVAS",
+        "ACEPTABLE_CON_RESERVAS",
+        "ACEPTABLE_CON_RESERVAS"
+      ],
+      "spread": 0.7,
+      "is_within_3pct": true
+    }
+  ],
+  "usage_summary": {
+    "total_calls": 90,
+    "total_prompt_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cached_tokens": 0,
+    "total_tokens": 84000,
+    "total_latency_ms": 0.0,
+    "avg_latency_ms": 0.0,
+    "total_estimated_cost_usd": 0.012
+  }
+}

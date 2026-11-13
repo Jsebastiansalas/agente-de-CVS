@@ -22,7 +22,9 @@ htmlcov/
 *.db
 *.sqlite3
 data/
-evals/reports/
+evals/reports/*
+!evals/reports/latest_eval_report.md
+!evals/reports/latest_eval_report.json
 
 # Node & Frontend
 frontend/node_modules/

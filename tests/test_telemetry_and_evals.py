@@ -206,3 +206,15 @@ def test_compute_benchmark_metrics_and_markdown_format() -> None:
     md = format_markdown_report(report)
     assert "Matriz de Confusión" in md
     assert "c1" in md
+
+
+@pytest.mark.asyncio
+async def test_run_golden_evals_mock_mode() -> None:
+    from evals.run_evals import run_golden_evals
+
+    report = await run_golden_evals(limit=5, consistency_sample=2, mock=True)
+    assert report.total_cases == 5
+    assert report.failed_cases == 0
+    assert report.accuracy_pct == 100.0
+    assert len(report.consistency_checks) == 2
+
