@@ -23,7 +23,7 @@ class GeminiClientError(RuntimeError):
 
 
 class GeminiClient:
-    """Cliente encapsulado para invocar modelos Gemini con salidas tipadas Pydantic."""
+    """Cliente encapsulado para invocar modelos Gemini con salidas tipadas o texto."""
 
     def __init__(
         self,
@@ -63,15 +63,62 @@ class GeminiClient:
             system_instruction=system_instruction,
         )
 
+        response = self._call_with_retries(
+            model=target_model,
+            contents=contents,
+            config=config,
+        )
+        try:
+            return self._parse_response(response, response_schema)
+        except Exception as exc:
+            raise GeminiClientError(
+                f"Fallo parseando respuesta estructurada de Gemini: {exc}"
+            ) from exc
+
+    def generate_text(
+        self,
+        *,
+        contents: Any,
+        model: str | None = None,
+        system_instruction: str | None = None,
+        temperature: float | None = None,
+    ) -> str:
+        """Invoca Gemini (texto o multimodal) y devuelve el texto plano generado."""
+        target_model = model or self.settings.gemini_flash_model
+        target_temp = (
+            self.settings.gemini_temperature if temperature is None else temperature
+        )
+
+        config = types.GenerateContentConfig(
+            temperature=target_temp,
+            system_instruction=system_instruction,
+        )
+        response = self._call_with_retries(
+            model=target_model,
+            contents=contents,
+            config=config,
+        )
+        text = getattr(response, "text", None)
+        if not text or not text.strip():
+            raise GeminiClientError("Gemini devolvió una respuesta de texto vacía.")
+        return text.strip()
+
+    def _call_with_retries(
+        self,
+        *,
+        model: str,
+        contents: Any,
+        config: types.GenerateContentConfig,
+    ) -> Any:
+        """Ejecuta generate_content con backoff exponencial ante errores transitorios."""
         last_error: Exception | None = None
         for attempt in range(1, self.settings.gemini_max_retries + 1):
             try:
-                response = self._client.models.generate_content(
-                    model=target_model,
+                return self._client.models.generate_content(
+                    model=model,
                     contents=contents,
                     config=config,
                 )
-                return self._parse_response(response, response_schema)
             except APIError as exc:
                 last_error = exc
                 status_code = getattr(exc, "code", None)
@@ -93,9 +140,8 @@ class GeminiClient:
                     f"Error en API de Gemini ({status_code}): {exc}"
                 ) from exc
             except Exception as exc:
-                last_error = exc
                 raise GeminiClientError(
-                    f"Fallo inesperado invocando o parseando respuesta de Gemini: {exc}"
+                    f"Fallo inesperado invocando Gemini: {exc}"
                 ) from exc
 
         raise GeminiClientError(
