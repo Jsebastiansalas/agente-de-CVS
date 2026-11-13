@@ -39,7 +39,10 @@ class GeminiClient:
                     "GEMINI_API_KEY no está configurada. "
                     "Define la variable de entorno o agrégala en tu archivo .env."
                 )
-            self._client = genai.Client(api_key=self.settings.gemini_api_key)
+            self._client = genai.Client(
+                api_key=self.settings.gemini_api_key,
+                http_options=types.HttpOptions(api_version=self.settings.gemini_api_version),
+            )
 
     def generate_structured(
         self,
