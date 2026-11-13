@@ -12,7 +12,13 @@ from pydantic import BaseModel, Field
 from src.config import Settings, get_settings
 from src.llm.gemini_client import GeminiClient
 
-SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".txt", ".md"}
+IMAGE_MIME_TYPES: dict[str, str] = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+}
+SUPPORTED_EXTENSIONS = {".pdf", ".docx", ".txt", ".md", *IMAGE_MIME_TYPES.keys()}
 MIN_USEFUL_PDF_CHARS = 100
 
 OCR_SYSTEM_INSTRUCTION = (
@@ -78,6 +84,31 @@ def _extract_docx_text(path: Path) -> str:
     return "\n".join(blocks).strip()
 
 
+def _extract_via_gemini_vision(
+    path: Path,
+    *,
+    mime_type: str,
+    gemini_client: GeminiClient | None,
+    settings: Settings,
+) -> str:
+    """Transcribe un PDF escaneado o imagen de CV usando Gemini multimodal."""
+    client = gemini_client or GeminiClient(settings=settings)
+    part = types.Part.from_bytes(data=path.read_bytes(), mime_type=mime_type)
+    ocr_text = client.generate_text(
+        model=settings.gemini_flash_model,
+        system_instruction=OCR_SYSTEM_INSTRUCTION,
+        contents=[
+            part,
+            "Transcribe íntegramente este documento a Markdown limpio respetando columnas.",
+        ],
+    )
+    if _useful_char_count(ocr_text) == 0:
+        raise CorruptedDocumentError(
+            f"No fue posible extraer texto de '{path.name}' mediante OCR multimodal."
+        )
+    return ocr_text
+
+
 def _extract_pdf_text(
     path: Path,
     gemini_client: GeminiClient | None,
@@ -106,21 +137,12 @@ def _extract_pdf_text(
     if _useful_char_count(markdown_text) >= MIN_USEFUL_PDF_CHARS:
         return markdown_text, False
 
-    client = gemini_client or GeminiClient(settings=settings)
-    pdf_bytes = path.read_bytes()
-    pdf_part = types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")
-    ocr_text = client.generate_text(
-        model=settings.gemini_flash_model,
-        system_instruction=OCR_SYSTEM_INSTRUCTION,
-        contents=[
-            pdf_part,
-            "Transcribe íntegramente esta hoja de vida a Markdown limpio respetando columnas.",
-        ],
+    ocr_text = _extract_via_gemini_vision(
+        path,
+        mime_type="application/pdf",
+        gemini_client=gemini_client,
+        settings=settings,
     )
-    if _useful_char_count(ocr_text) == 0:
-        raise CorruptedDocumentError(
-            f"No fue posible extraer texto del PDF '{path.name}' ni mediante OCR multimodal."
-        )
     return ocr_text, True
 
 
@@ -162,6 +184,14 @@ def parse_document(
             text = path.read_text(encoding="latin-1").strip()
     elif ext == ".docx":
         text = _extract_docx_text(path)
+    elif ext in IMAGE_MIME_TYPES:
+        text = _extract_via_gemini_vision(
+            path,
+            mime_type=IMAGE_MIME_TYPES[ext],
+            gemini_client=gemini_client,
+            settings=cfg,
+        )
+        used_ocr = True
     else:
         text, used_ocr = _extract_pdf_text(path, gemini_client=gemini_client, settings=cfg)
 

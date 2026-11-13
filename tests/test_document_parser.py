@@ -60,6 +60,25 @@ def test_parse_scanned_pdf_triggers_gemini_ocr_fallback() -> None:
     mock_gemini.generate_text.assert_called_once()
 
 
+def test_parse_image_cv_uses_gemini_vision(tmp_path: Path) -> None:
+    from PIL import Image
+
+    img_path = tmp_path / "cv_foto.png"
+    Image.new("RGB", (200, 100), color="white").save(img_path)
+
+    mock_gemini = MagicMock()
+    mock_gemini.generate_text.return_value = "CANDIDATO\nPython Developer\nFastAPI"
+
+    parsed = parse_document(
+        img_path,
+        gemini_client=mock_gemini,
+        settings=Settings(gemini_api_key="test-key"),
+    )
+    assert parsed.source_format == "png"
+    assert parsed.used_ocr_fallback is True
+    assert "FastAPI" in parsed.text
+
+
 def test_parse_rejects_unsupported_extension(tmp_path: Path) -> None:
     bad_file = tmp_path / "cv.exe"
     bad_file.write_bytes(b"binary")
