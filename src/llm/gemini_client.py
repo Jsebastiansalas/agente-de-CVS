@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import re
 import time
 from typing import Any, TypeVar
 
@@ -22,6 +23,22 @@ logger = logging.getLogger(__name__)
 SchemaT = TypeVar("SchemaT", bound=BaseModel)
 
 RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
+MAX_RPM_WAIT_SECONDS = 65.0
+RETRY_DELAY_PATTERN = re.compile(r"Please retry in (\d+(?:\.\d+)?)s")
+
+
+def _compute_retry_delay(exc: APIError, attempt: int, base_delay: float) -> float | None:
+    """Calcula el tiempo de espera; devuelve None si la cuota diaria se agotó."""
+    msg = str(exc)
+    if "PerDay" in msg:
+        return None
+    match = RETRY_DELAY_PATTERN.search(msg)
+    if match:
+        requested = float(match.group(1))
+        if requested > MAX_RPM_WAIT_SECONDS:
+            return None
+        return requested + 1.0
+    return base_delay * (2 ** (attempt - 1))
 
 
 class GeminiClientError(RuntimeError):
@@ -234,16 +251,19 @@ class GeminiClient:
                     status_code in RETRYABLE_STATUS_CODES
                     and attempt < self.settings.gemini_max_retries
                 ):
-                    delay = self.settings.gemini_retry_base_delay * (2 ** (attempt - 1))
-                    logger.warning(
-                        "Error transitorio en Gemini (HTTP %s), reintento %d/%d en %.1fs",
-                        status_code,
-                        attempt,
-                        self.settings.gemini_max_retries,
-                        delay,
+                    delay = _compute_retry_delay(
+                        exc, attempt, self.settings.gemini_retry_base_delay
                     )
-                    time.sleep(delay)
-                    continue
+                    if delay is not None:
+                        logger.warning(
+                            "Error transitorio en Gemini (HTTP %s), reintento %d/%d en %.1fs",
+                            status_code,
+                            attempt,
+                            self.settings.gemini_max_retries,
+                            delay,
+                        )
+                        time.sleep(delay)
+                        continue
                 raise GeminiClientError(
                     f"Error en API de Gemini ({status_code}): {exc}"
                 ) from exc
@@ -292,16 +312,19 @@ class GeminiClient:
                     status_code in RETRYABLE_STATUS_CODES
                     and attempt < self.settings.gemini_max_retries
                 ):
-                    delay = self.settings.gemini_retry_base_delay * (2 ** (attempt - 1))
-                    logger.warning(
-                        "Error transitorio async en Gemini (HTTP %s), reintento %d/%d en %.1fs",
-                        status_code,
-                        attempt,
-                        self.settings.gemini_max_retries,
-                        delay,
+                    delay = _compute_retry_delay(
+                        exc, attempt, self.settings.gemini_retry_base_delay
                     )
-                    await asyncio.sleep(delay)
-                    continue
+                    if delay is not None:
+                        logger.warning(
+                            "Error transitorio async en Gemini (HTTP %s), reintento %d/%d en %.1fs",
+                            status_code,
+                            attempt,
+                            self.settings.gemini_max_retries,
+                            delay,
+                        )
+                        await asyncio.sleep(delay)
+                        continue
                 raise GeminiClientError(
                     f"Error en API de Gemini ({status_code}): {exc}"
                 ) from exc

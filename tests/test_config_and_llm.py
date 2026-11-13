@@ -8,7 +8,7 @@ from google.genai.errors import APIError
 from pydantic import BaseModel
 
 from src.config import ScoringWeights, Settings
-from src.llm.gemini_client import GeminiClient, GeminiClientError
+from src.llm.gemini_client import GeminiClient, GeminiClientError, _compute_retry_delay
 
 
 class _DummyOutput(BaseModel):
@@ -86,3 +86,19 @@ def test_gemini_client_retries_on_rate_limit(monkeypatch: pytest.MonkeyPatch) ->
 
     assert result.score == 91
     assert mock_sdk_client.models.generate_content.call_count == 2
+
+
+def test_compute_retry_delay_respects_rpm_and_fails_fast_on_daily_quota() -> None:
+    rpm_err = APIError(429, {"error": {"message": "Rate limit. Please retry in 12.5s"}})
+    assert _compute_retry_delay(rpm_err, attempt=1, base_delay=1.0) == 13.5
+
+    daily_err = APIError(
+        429,
+        {
+            "error": {
+                "message": "GenerateRequestsPerDayPerProjectPerModel-FreeTier. "
+                "Please retry in 53881s"
+            }
+        },
+    )
+    assert _compute_retry_delay(daily_err, attempt=1, base_delay=1.0) is None
