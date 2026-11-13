@@ -52,6 +52,9 @@ class Settings(BaseSettings):
     # Límites de ingesta
     max_file_size_mb: int = Field(default=10, ge=1, le=50)
 
+    # Persistencia local (SQLite)
+    database_path: str = Field(default="data/evaluations.db")
+
     weights: ScoringWeights = Field(default_factory=ScoringWeights)
 
     @model_validator(mode="after")
