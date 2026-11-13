@@ -6,6 +6,7 @@ from typing import Any
 
 from src.config import Settings, get_settings
 from src.ingestion.document_parser import parse_document
+from src.llm.context_cache import VacancyCacheManager
 from src.llm.gemini_client import GeminiClient
 from src.schemas.vacancy import VacancySchema
 
@@ -31,6 +32,7 @@ def extract_vacancy(
     overrides: dict[str, Any] | None = None,
     gemini_client: GeminiClient | None = None,
     settings: Settings | None = None,
+    cache_manager: VacancyCacheManager | None = None,
 ) -> VacancySchema:
     """Extrae una VacancySchema desde texto libre usando Gemini con soporte de overrides."""
     cleaned = raw_text.strip()
@@ -38,23 +40,29 @@ def extract_vacancy(
         raise ValueError("El texto de la vacante no puede estar vacío.")
 
     cfg = settings or get_settings()
-    client = gemini_client or GeminiClient(settings=cfg)
     assigned_id = vacancy_id or f"vac_{uuid.uuid4().hex[:8]}"
 
-    prompt = (
-        f"Usa exactamente vacancy_id='{assigned_id}'.\n"
-        f"Descripción de la vacante:\n<vacancy_text>\n{cleaned}\n</vacancy_text>"
-    )
+    extracted: VacancySchema | None = None
+    if cache_manager is not None:
+        extracted = cache_manager.get_local_vacancy(cleaned)
 
-    extracted = client.generate_structured(
-        model=cfg.gemini_flash_model,
-        system_instruction=VACANCY_EXTRACTION_INSTRUCTION,
-        contents=prompt,
-        response_schema=VacancySchema,
-    )
+    if extracted is None:
+        client = gemini_client or GeminiClient(settings=cfg)
+        prompt = (
+            f"Usa exactamente vacancy_id='{assigned_id}'.\n"
+            f"Descripción de la vacante:\n<vacancy_text>\n{cleaned}\n</vacancy_text>"
+        )
+        extracted = client.generate_structured(
+            model=cfg.gemini_flash_model,
+            system_instruction=VACANCY_EXTRACTION_INSTRUCTION,
+            contents=prompt,
+            response_schema=VacancySchema,
+        )
+        if cache_manager is not None:
+            cache_manager.put_local_vacancy(cleaned, extracted)
 
-    if extracted.vacancy_id != assigned_id:
-        extracted = extracted.model_copy(update={"vacancy_id": assigned_id})
+    if vacancy_id and extracted.vacancy_id != vacancy_id:
+        extracted = extracted.model_copy(update={"vacancy_id": vacancy_id})
 
     if overrides:
         merged = extracted.model_dump()
@@ -71,6 +79,7 @@ def extract_vacancy_from_file(
     overrides: dict[str, Any] | None = None,
     gemini_client: GeminiClient | None = None,
     settings: Settings | None = None,
+    cache_manager: VacancyCacheManager | None = None,
 ) -> VacancySchema:
     """Lee un archivo de vacante (PDF/DOCX/TXT) y extrae su rúbrica estructurada."""
     cfg = settings or get_settings()
@@ -82,4 +91,5 @@ def extract_vacancy_from_file(
         overrides=overrides,
         gemini_client=client,
         settings=cfg,
+        cache_manager=cache_manager,
     )
